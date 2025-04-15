@@ -1,0 +1,289 @@
+/*!
+ * Bootstrap v5.0.0-beta1 (https://getbootstrap.com/)
+ * Copyright 2011-2020 The Bootstrap Authors
+ * Copyright 2011-2020 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+ */
+/*-----------------------------------------------*/
+/*------------------ Base Colors ----------------*/
+/*-----------------------------------------------*/
+/*-----------------------------------------------*/
+/*------------------ Typography -----------------*/
+/*-----------------------------------------------*/
+/*------------------ Page Title -----------------*/
+/*---------------- Section Title ----------------*/
+/*----------------- Block Title -----------------*/
+/*------------------ Tab Title ------------------*/
+/*----------------- Text content ----------------*/
+/*----------------- Blockquote ------------------*/
+/*------------------ List style -----------------*/
+/*-----------------------------------------------*/
+/*-------------------- Layout -------------------*/
+/*-----------------------------------------------*/
+/*-----------------------------------------------*/
+/*------------------ Compontents ----------------*/
+/*-----------------------------------------------*/
+/*-------------------- Table --------------------*/
+/*-------------------- Alert --------------------*/
+/*-------------------- Buttons --------------------*/
+/*---------------------- List ---------------------*/
+/*---------------------- Form ---------------------*/
+/*------------------ Accordions -----------------*/
+/*--------------------- Tabs --------------------*/
+/*----------------- Range Slider ----------------*/
+/*----------------- Progressbar -----------------*/
+/*-----------------------------------------------*/
+/*-------------------- Header -------------------*/
+/*-----------------------------------------------*/
+/*-----------------------------------------------*/
+/*--------------------- Menu --------------------*/
+/*-----------------------------------------------*/
+/*-----------------------------------------------*/
+/*-------------------- Footer -------------------*/
+/*-----------------------------------------------*/
+/*-----------------------------------------------*/
+/*----------------- Aside Popup -----------------*/
+/*-----------------------------------------------*/
+/*-----------------------------------------------*/
+/*-------------------- Modal --------------------*/
+/*-----------------------------------------------*/
+/*-----------------------------------------------*/
+/*----------------- Text content ----------------*/
+/*-----------------------------------------------*/
+/*-----------------------------------------------*/
+/*------------------- Swatches ------------------*/
+/*-----------------------------------------------*/
+/*-----------------------------------------------*/
+/*------------------- Rating Stars --------------*/
+/*-----------------------------------------------*/
+/*-----------------------------------------------*/
+/*------------------ Shop Checkout --------------*/
+/*-----------------------------------------------*/
+/* CSS Responsif untuk Busy Weekends Clothing Brand */
+
+/* Base Styles - sudah ada di file Anda */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+html[data-theme="mytheme"] {
+    --tw-primary: #010BEB;
+    --tw-secondary: #5DA9FF;
+    --tw-neutral: #4A4A4A;
+    --tw-base-100: #ffffff;
+    --tw-accent: #F9F9F9;
+    --tw-error: #f44336;
+    --tw-purple: #820aa7;
+}
+
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    :root {
+        scroll-behavior: smooth;
+    }
+}
+
+html, body {
+    height: 100%;
+    background-color: white;
+    font-family: 'Poppins', sans-serif;
+    -webkit-text-size-adjust: 100%;
+    box-shadow: none !important;
+    filter: none !important;
+    opacity: 1 !important;
+    overflow-x: hidden;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+[tabindex="-1"]:focus:not(:focus-visible) {
+    outline: 0 !important;
+}
+
+hr {
+    margin: 1rem 0;
+    color: inherit;
+    background-color: currentColor;
+    border: 0;
+    opacity: 0.25;
+}
+
+h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+h1, .h1 {
+    font-size: calc(1.375rem + 1.5vw);
+}
+@media (min-width: 768px) {
+    h1, .h1 {
+        font-size: 2.5rem;
+    }
+}
+
+h2, .h2 {
+    font-size: calc(1.3rem + 0.6vw);
+}
+@media (min-width: 768px) {
+    h2, .h2 {
+        font-size: 1.75rem;
+    }
+}
+
+h3, .h3 {
+    font-size: calc(1.25rem + 0.3vw);
+}
+@media (min-width: 768px) {
+    h3, .h3 {
+        font-size: 1.5rem;
+    }
+}
+
+h4, .h4 {
+    font-size: 1.25rem;
+}
+
+h5, .h5 {
+    font-size: 1.125rem;
+}
+
+h6, .h6 {
+    font-size: 1rem;
+}
+
+p {
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+/* Navbar */
+#MainNavbar {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 9999 !important;
+    background-color: var(--tw-primary) !important;
+    transition: transform 0.3s ease-in-out !important;
+}
+
+.logo {
+    height: 40px;
+}
+@media (min-width: 640px) {
+    .logo {
+        height: 48px;
+    }
+}
+
+nav ul li a:hover {
+    color: var(--tw-accent);
+    border-bottom: 2px solid var(--tw-secondary);
+}
+
+.nav_link {
+    position: relative;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.nav_link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 100%;
+    height: 2px;
+    opacity: 1;
+}
+
+.icons {
+    margin-right: 0;
+}
+
+/* The Almost Forgotten Section */
+.about {
+    padding: 2rem 1rem;
+}
+@media (min-width: 768px) {
+    .about {
+        padding: 3rem 1.5rem;
+    }
+}
+
+.about p {
+    max-width: 600px;
+    line-height: 1.6;
+    color: black;
+}
+
+.about .read-more {
+    color: #000000;
+    text-decoration: none;
+}
+
+.read-more-icon {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+/* Footer */
+.footer-link {
+    color: var(--tw-accent);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+    color: var(--tw-secondary);
+}
+
+/* Responsive Containers */
+@media (min-width: 576px) {
+    .container, .container-sm {
+        max-width: 540px;
+    }
+}
+@media (min-width: 768px) {
+    .container, .container-md {
+        max-width: 720px;
+    }
+}
+@media (min-width: 992px) {
+    .container, .container-lg {
+        max-width: 960px;
+    }
+}
+@media (min-width: 1200px) {
+    .container, .container-xl {
+        max-width: 1140px;
+    }
+}
+@media (min-width: 1500px) {
+    .container, .container-xxl {
+        max-width: 1440px;
+    }
+}
+
+.product-card {
+    transition: all 0.3s ease-in-out;
+}
+
+.product-card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.section-padding {
+    padding: 4rem 1rem;
+}
