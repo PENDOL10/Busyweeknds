@@ -5,29 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
-class HomeController extends Controller
+class ShopController extends Controller
 {
-    public function index()
-    {
-        $products = Product::take(3)->get();
-        return view('index', compact('products'));
-    }
-
-    public function about()
-    {
-        return view('customer-user.about');
-    }
-
-    public function shop(Request $request)
+    public function index(Request $request)
     {
         $query = Product::query();
 
-        // Terapkan filter kategori jika disediakan
+        // Apply category filter if provided
         if ($request->has('category')) {
             $query->where('category', $request->category);
         }
 
-        // Terapkan filter ukuran jika disediakan
+        // Apply size filter if provided
         if ($request->has('size')) {
             $query->where('size', 'like', '%' . $request->size . '%');
         }
@@ -41,7 +30,7 @@ class HomeController extends Controller
     {
         $product = Product::findOrFail($id);
         
-        // Ambil produk terkait (kategori sama)
+        // Get related products (same category)
         $relatedProducts = Product::where('category', $product->category)
                                 ->where('id', '!=', $product->id)
                                 ->take(4)

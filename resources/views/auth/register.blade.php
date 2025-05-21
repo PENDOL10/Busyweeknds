@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Register - {{ config('app.name', 'Laravel') }}</title>
+    <title>Register - {{ config('app.name', 'Busyweeknds') }}</title>
 
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="author" content="bsyweeknds" />
@@ -44,13 +44,13 @@
                 <form method="POST" action="{{ route('register') }}">
                     @csrf
                     <div class="mb-2">
-                        <input id="name" type="name" name="name" placeholder="Name" value="{{ old('name') }}" required autofocus
+                        <input id="name" type="text" name="name" placeholder="Name" value="{{ old('name') }}" required autofocus
                             class="input input-bordered border border-black w-full mt-1 text-gray-700 bg-white" />
                     </div>
 
                     <!-- Email -->
                     <div class="mb-2">
-                        <input id="email" type="email" name="email" placeholder="Email Address" value="{{ old('email') }}" required autofocus
+                        <input id="email" type="email" name="email" placeholder="Email Address" value="{{ old('email') }}" required
                             class="input input-bordered border border-black w-full mt-1 text-gray-700 bg-white" />
                     </div>
 
@@ -60,14 +60,20 @@
                             class="input input-bordered border border-black w-full mt-1 text-gray-700 bg-white" />
                     </div>
 
+                    <!-- Password Confirmation -->
+                    <div class="mb-2">
+                        <input id="password_confirmation" type="password" name="password_confirmation" placeholder="Confirm Password" required
+                            class="input input-bordered border border-black w-full mt-1 text-gray-700 bg-white" />
+                    </div>
+
                     <!-- Telephone -->
                     <div class="mb-8">
-                        <input id="Telephone" type="Telephone" name="Telephone" placeholder="Telephone" required
+                        <input id="telephone" type="tel" name="telephone" placeholder="Telephone" value="{{ old('telephone') }}" required
                             class="input input-bordered border border-black w-full mt-1 text-gray-700 bg-white"/>
                     </div>
 
                     <!-- Button Submit -->
-                    <button type="submit" class="btn btn-primary w-full">Register</button>
+                    <button type="submit" class="btn w-full bg-[#010BEB] text-white hover:bg-[#0009c4] transition-colors duration-300 border-none focus:outline-none">Register</button>
                 </form>
                 
                 <!-- Login Link -->
@@ -79,4 +85,5 @@
             </div>
         </div>
     </div>
-    </body>
+</body>
+</html>

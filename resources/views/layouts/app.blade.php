@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Busyweeknds') }}</title>
 
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="author" content="bsyweeknds" />
@@ -27,54 +27,66 @@
 <body>
   <!-- Header Nav -->
 <header id="header" class="header header-fullwidth header-transparent-bg">
-  <nav id="MainNavbar" class="navbar fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out px-5 py-1 flex justify-between items-center">
-    <div class="flex items-center space-x-4">
+  <nav id="MainNavbar" class="navbar fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out px-2 sm:px-5 py-1 flex flex-wrap justify-between items-center">
+    <div class="flex items-center space-x-2 sm:space-x-4">
       <!-- Logo -->
       <a href="{{ route('index') }}" class="text-lg fw-bold">
-        <img src="{{ asset('assets/images/Logo.png') }}" alt="Uomo" class="logo h-12"/>
+        <img src="{{ asset('assets/images/Logo.png') }}" alt="Uomo" class="logo h-8 sm:h-12"/>
       </a>
 
-      <!-- Nav Menu -->
-      <ul class="flex items-center gap-4 text-white font-semibold text-[17px]">
-        <li><a href="#" class="hover:border-b-3">Shop</a></li>
+      <!-- Nav Menu - Visible on all screens -->
+      <ul class="flex sm:flex items-center gap-4 text-white font-semibold text-base sm:text-[17px]">
+        <li><a href="{{ route('shop') }}" class="hover:border-b-3">Shop</a></li>
         <li><a href="{{ route('about') }}" class="hover:border-b-3">About Us</a></li>
       </ul>
     </div>
 
+    <!-- Mobile menu button - Only visible on small screens -->
+    <div class="sm:hidden">
+      <button id="mobileMenuBtn" class="text-white">
+        <iconify-icon icon="heroicons:menu" width="24" height="24" style="color: #fff"></iconify-icon>
+      </button>
+    </div>
+
     <!-- Icons -->
-    <div class="flex items-center space-x-4">
-      <div class="icons flex items-center space-x-3 sm:space-x-4">
+    <div class="flex items-center space-x-2 sm:space-x-4">
+      <div class="icons flex items-center space-x-2 sm:space-x-3">
         <!-- icon search -->
         <a href="#" class="header-tools__item" aria-label="Search products">
-            <iconify-icon icon="material-symbols:search-rounded" width="25" height="25" style="color: #fff"></iconify-icon>
+            <iconify-icon icon="material-symbols:search-rounded" width="22" height="22" style="color: #fff"></iconify-icon>
         </a>
         <!-- icon cart -->
         <a href="#" class="header-tools__item" aria-label="View cart">
-            <iconify-icon icon="uil:cart" width="25" height="25" style="color: #fff;"></iconify-icon>
+            <iconify-icon icon="uil:cart" width="22" height="22" style="color: #fff;"></iconify-icon>
         </a>
         <!--  -->
         @guest
         <!-- auth -->
         <a href="{{ route('login') }}" class="header-tools__item" aria-label="Login to account">
-              <iconify-icon icon="ph:user-circle" width="25" height="25" style="color: #fff;"></iconify-icon>
+              <iconify-icon icon="ph:user-circle" width="22" height="22" style="color: #fff;"></iconify-icon>
         </a>
         @else
+        
         <!-- action -->
         <div class="dropdown dropdown-end">
             <label tabindex="0" class="header-tools__item flex items-center gap-2 cursor-pointer">
-                <iconify-icon icon="ph:user-circle" width="25" height="25" style="color: #fff;"></iconify-icon>
-                <span class="text-sm font-semibold text-white">{{ Auth::user()->name }}</span>
+                <iconify-icon icon="ph:user-circle" width="22" height="22" style="color: #fff;"></iconify-icon>
+                <span class="hidden sm:inline text-xs sm:text-sm font-semibold text-white truncate max-w-[80px] sm:max-w-full">{{ Auth::user()->name }}</span>
             </label>
             <ul tabindex="0" class="menu dropdown-content mt-2 p-2 shadow bg-base-100 rounded-box w-52">
-              <!-- Dashboard -->
+                <!-- Dashboard -->
                 <li>
-                  <a href="{{ Auth::user()->utype === 'ADM' ? route('admin.index') : route('customer-user.index') }}">Dashboard</a>
+                    @if(Auth::user()->utype === 'ADM')
+                        <a href="{{ route('admin.index') }}">Profile Admin</a>
+                    @else
+                        <a href="{{ route('customer-user.index') }}">Profile User</a>
+                    @endif
                 </li>
                 <li>
-               <!-- logout  -->
+                    <!-- logout  -->
                   <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                        <button type="submit" class="w-full text-left">Logout</button>
+                      @csrf
+                      <button type="submit" class="w-full text-left">Logout</button>
                   </form>
                 </li>
             </ul>
@@ -83,6 +95,14 @@
         </div>
       </div>
     </nav>
+
+    <!-- Mobile Navigation Menu - Dropdown -->
+    <div id="mobileMenu" class="hidden w-full bg-primary sm:hidden">
+      <ul class="flex flex-col py-2 px-4">
+        <li class="py-2"><a href="{{ route('shop') }}" class="text-white font-semibold">Shop</a></li>
+        <li class="py-2"><a href="{{ route('about') }}" class="text-white font-semibold">About Us</a></li>
+      </ul>
+    </div>
 </header>
 
 <!-- Content Main -->
@@ -93,25 +113,25 @@
 <!-- Footer -->
 <footer class="text-base-content m-0 p-0" style="background-color: var(--tw-primary);">
   <!-- Bagian Atas Footer -->
-  <div class="flex flex-col md:flex-row justify-between items-start px-10 py-4 gap-6 h-auto">
+  <div class="flex flex-col md:flex-row justify-between items-start px-4 sm:px-10 py-4 gap-6 h-auto">
     <!-- Kiri -->
-    <nav>
-      <h3 class="mt-6 mb-3 text-white font-bold text-xl">EXPLORE</h3>
+    <nav class="w-full md:w-auto">
+      <h3 class="mt-6 mb-3 text-white font-bold text-lg sm:text-xl">EXPLORE</h3>
       <ul>
-        <li><a class="footer-link" href="#">Shop</a></li>
+        <li><a class="footer-link" href="{{ route('shop') }}">Shop</a></li>
         <li><a class="footer-link" href="{{ route('about') }}">About Us</a></li>
       </ul>
 
-      <h3 class="mt-6 mb-3 text-white font-bold text-xl">CONTACT US</h3>
+      <h3 class="mt-6 mb-3 text-white font-bold text-lg sm:text-xl">CONTACT US</h3>
       <ul>
         <li><a class="footer-link" href="#">+(62) 8259 9010</a></li>
-        <li><a class="footer-link" href="#">busyweekends@gmail.com</a></li>
+        <li><a class="footer-link break-words" href="#">busyweekends@gmail.com</a></li>
         <li><a class="footer-link" href="#">Wonosobo, Central Java, Indonesia</a></li>
       </ul>
     </nav>
 
     <!-- Kanan (Logo Media Sosial) -->
-    <div class="flex flex-col self-end">
+    <div class="flex flex-col self-center md:self-end mt-4 md:mt-0">
       <div class="flex gap-4">
         <a>
           <iconify-icon icon="mingcute:instagram-line" width="25" height="25" style="color: #fff"></iconify-icon>
@@ -142,6 +162,19 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+<script>
+  // Mobile menu toggle
+  document.addEventListener('DOMContentLoaded', function () {
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    if (mobileMenuBtn && mobileMenu) {
+      mobileMenuBtn.addEventListener('click', function() {
+        mobileMenu.classList.toggle('hidden');
+      });
+    }
+  });
+</script>
 @stack("scripts")
 
 </body>

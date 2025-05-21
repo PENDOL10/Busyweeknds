@@ -74,6 +74,61 @@ html[data-theme="mytheme"] {
     --tw-purple: #820aa7;
 }
 
+/* Primary button */
+.btn-primary {
+  background-color: var(--tw-primary);
+}
+
+.btn-primary:hover {
+  background-color: #0009c4;
+}
+
+/* Secondary button */
+.btn-secondary {
+  background-color: var(--tw-secondary);
+}
+
+.btn-secondary:hover {
+  background-color: #3c91e6;
+}
+
+/* Neutral button */
+.btn-neutral {
+  background-color: var(--tw-neutral);
+}
+
+.btn-neutral:hover {
+  background-color: #3a3a3a;
+}
+
+/* Accent button (light) */
+.btn-accent {
+  background-color: var(--tw-accent);
+  color: black;
+}
+
+.btn-accent:hover {
+  background-color: #e0e0e0;
+}
+
+/* Error button */
+.btn-error {
+  background-color: var(--tw-error);
+}
+
+.btn-error:hover {
+  background-color: #d32f2f;
+}
+
+/* Purple button */
+.btn-purple {
+  background-color: var(--tw-purple);
+}
+
+.btn-purple:hover {
+  background-color: #6e0990;
+}
+
 *::before,
 *::after {
     box-sizing: border-box;
@@ -211,14 +266,25 @@ nav ul li a:hover {
     margin-right: 0;
 }
 
+/* Navbar adjustments for mobile view */
+#MainNavbar ul {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+#MainNavbar ul li a {
+    font-size: 0.875rem;
+}
+
+@media (min-width: 640px) {
+    #MainNavbar ul li a {
+        font-size: 1rem;
+    }
+}
+
 /* The Almost Forgotten Section */
 .about {
     padding: 2rem 1rem;
-}
-@media (min-width: 768px) {
-    .about {
-        padding: 3rem 1.5rem;
-    }
 }
 
 .about p {
@@ -286,4 +352,127 @@ nav ul li a:hover {
 
 .section-padding {
     padding: 4rem 1rem;
+}
+
+/* Mobile Menu */
+#mobileMenu {
+    background-color: var(--tw-primary);
+    width: 100%;
+    transition: all 0.3s ease-in-out;
+}
+
+#mobileMenu ul {
+    list-style: none;
+}
+
+#mobileMenu ul li a {
+    display: block;
+    padding: 0.75rem 0;
+    transition: all 0.3s ease;
+}
+
+#mobileMenu ul li a:hover {
+    opacity: 0.8;
+}
+
+/* Hero Section Responsive Adjustments */
+@media (max-width: 640px) {
+    .hero-title {
+        font-size: 2.5rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 2rem !important;
+    }
+}
+
+/* Info Box (Numbers and Stats) */
+.info-box {
+    background-color: var(--tw-neutral);
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .info-box {
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+    
+    .info-box-item {
+        padding: 0.5rem;
+        width: 30%;
+        text-align: center;
+    }
+}
+
+/* Subscribe Form */
+.subscribe-form {
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+@media (min-width: 640px) {
+    .subscribe-form {
+        max-width: 400px;
+    }
+}
+
+/* About Section Images */
+.model-images {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+}
+
+@media (min-width: 640px) {
+    .model-images {
+        display: flex;
+        gap: 1rem;
+    }
+    
+    .model-image {
+        width: 30%;
+    }
+}
+
+/* Hide on Mobile */
+.hide-mobile {
+    display: none;
+}
+
+@media (min-width: 640px) {
+    .hide-mobile {
+        display: block;
+    }
+}
+
+/* Show only on Mobile */
+.mobile-only {
+    display: block;
+}
+
+@media (min-width: 640px) {
+    .mobile-only {
+        display: none;
+    }
+}
+
+/* Utility Classes for Responsive Text */
+.text-responsive {
+    font-size: 0.875rem;
+}
+
+@media (min-width: 640px) {
+    .text-responsive {
+        font-size: 1rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .text-responsive {
+        font-size: 1.125rem;
+    }
 }

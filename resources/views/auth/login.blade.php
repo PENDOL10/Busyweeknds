@@ -4,8 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Login - {{ config('app.name', 'Laravel') }}</title>
-
+    <title>Login - {{ config('app.name', 'Busyweeknds') }}</title>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="author" content="bsyweeknds" />
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}" type="image/x-icon">
@@ -28,7 +27,7 @@
             <!-- Login Form -->
             <div class="bg-white p-8 rounded-lg shadow-md">
                 <h2 class="text-3xl font-semibold text-black mb-4">Login</h2>
-                <p class="text-black mb-6">Enter your email and password below if you already have an account</p>
+                <p class="text-black mb-6">Enter your email or telephone and password below if you already have an account</p>
 
                 @if ($errors->any())
                     <div class="alert alert-error mb-4">
@@ -40,11 +39,10 @@
                     </div>
                 @endif
 
-            <!-- Form input -->
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
                     <div class="mb-2">
-                        <input id="email" type="email" name="email" placeholder="Email Address" value="{{ old('email') }}" required autofocus
+                        <input id="login" type="text" name="login" placeholder="Email or Telephone" value="{{ old('login') }}" required autofocus
                             class="input input-bordered border border-black w-full mt-1 text-gray-700 bg-white" />
                     </div>
 
@@ -65,7 +63,9 @@
                         @endif
                     </div>
                     <!-- Button Submit -->
-                    <button type="submit" class="btn btn-primary w-full">Login</button>
+                    <button type="submit" class="btn w-full bg-[#010BEB] text-white hover:bg-[#0009c4] transition-colors duration-300 border-none focus:outline-none">
+                        Login
+                    </button>
                 </form>
             </div>
 
@@ -75,7 +75,9 @@
                 <p class="text-black mb-6">Don't have an account? Click the button below to register</p>
                 
                 @if (Route::has('register'))
-                    <a href="{{ route('register') }}" class="btn btn-primary w-full">Register</a>           
+                    <a href="{{ route('register') }}" class="btn w-full bg-[#010BEB] text-white hover:bg-[#0009c4] transition-colors duration-300 border-none focus:outline-none">
+                        Register
+                    </a>           
                 @endif
             </div>
         </div>
