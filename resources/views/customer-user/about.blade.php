@@ -3,7 +3,7 @@
 @section('content')
 
 <!-- About Us Section -->
-<section class="py-12 sm:py-16 md:py-20 bg-white mt-8 mb-[90px]">
+<section class="py-12 sm:py-16 md:py-20 bg-white mt-4 mb-[90px]">
     <div class="container mx-auto px-4 sm:px-6 md:px-8 lg:px-20">
         <div class="flex flex-col md:flex-row items-center gap-8 md:gap-12">
             

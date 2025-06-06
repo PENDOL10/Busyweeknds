@@ -6,21 +6,18 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class AuthAdmin
+class AuthOwner
 {
     public function handle(Request $request, Closure $next)
     {
-        // Debug: Log or dump to confirm this middleware is being called
-        \Log::info('AuthAdmin middleware called for user: ' . (Auth::check() ? Auth::user()->email : 'Unauthenticated'));
-
         if (!Auth::check()) {
             return redirect()->route('login')->with('error', 'Please login to access this page.');
         }
 
-        if (Auth::user()->utype === 'ADM') {
+        if (Auth::user()->utype === 'OWN') {
             return $next($request);
         }
 
-        return redirect()->route('index')->with('error', 'You do not have permission to access the admin dashboard.');
+        return redirect()->route('index')->with('error', 'You do not have permission to access the owner dashboard.');
     }
 }

@@ -16,47 +16,64 @@
   </h1>
 
   <!-- Button Hero -->
-    <button class="mt-4 px-4 sm:px-6 py-2 bg-white font-bold rounded w-max" style="color: var(--tw-primary)">
-      See More
-    </button>
+      <button onclick="window.location.href='{{ url('/shop') }}'" class="mt-4 px-4 sm:px-6 py-2 bg-white font-bold rounded w-max" style="color: var(--tw-primary)">
+        See More
+      </button>
   </div>
 </section>
 <!-- End Section -->
 
 <!-- Elevate Your Wardrobe Section -->
 <section class="py-8 sm:py-10 mt-2">
-        <div class="container mx-auto px-4">
-            <h1 class="text-2xl sm:text-3xl font-bold mb-4 sm:mb-8 text-black">
-                / ELEVATE YOUR WARDROBE
-            </h1>
-              <div class="flex justify-end mb-4">
-                <a href="{{ url('shop') }}" class="relative group text-sm text-black font-semibold cursor-pointer">
-                  SHOP ALL
-                  <!-- Garis bawah animasi -->
-                  <span class="absolute left-0 -bottom-1 w-full h-[2px] bg-black transition-transform duration-300 group-hover:translate-x-full"></span>
-                </a>
-              </div>   
+    <div class="container mx-auto px-4">
+        <h1 class="text-2xl sm:text-3xl font-bold mb-4 sm:mb-8 text-black">
+            / ELEVATE YOUR WARDROBE
+        </h1>
+        <div class="flex justify-end mb-4">
+            <a href="{{ url('shop') }}" class="relative group text-sm text-black font-semibold cursor-pointer">
+                SHOP ALL
+                <span class="absolute left-0 -bottom-1 w-full h-[2px] bg-black transition-transform duration-300 group-hover:translate-x-full"></span>
+            </a>
+        </div>   
         
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
-                @forelse ($products as $product)
-                    <div class="flex flex-col items-center">
-                      <!-- Dinamis Product -->
-                        <img alt="{{ $product->name }}" class="product w-full max-w-[300px] h-auto" src="{{ asset($product->image) }}" loading="lazy"/>
-                        <h3 class="mt-4 text-lg sm:text-xl font-bold text-black text-center">
-                            {{ $product->name }}
-                        </h3>
-                        <p class="text-black text-center">
-                            IDR {{ number_format($product->price, 0, ',', '.') }}
-                        </p>
-                    </div>
-                @empty
-                    <p class="text-black text-center col-span-1 sm:col-span-2 md:col-span-3 text-xl sm:text-2xl">
-                      We Are So Sorry! <br> The Product is Out of Stock Right Now <br> Please Stay Tune With Us..
-                    </p>
-                @endforelse
-            </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
+            @forelse ($products as $product)
+                <div class="flex flex-col items-center">
+                    @if (Auth::check())
+                        <!-- If user is logged in, allow access to product detail -->
+                        <a href="{{ route('product.show', $product->id) }}" class="block">
+                            <img alt="{{ $product->name }}" class="product w-full max-w-[300px] h-auto" src="{{ asset($product->image) }}" loading="lazy"/>
+                            <h3 class="mt-4 text-lg sm:text-xl font-bold text-black text-center">
+                                {{ $product->name }}
+                            </h3>
+                            <p class="text-black text-center">
+                                IDR {{ number_format($product->price, 0, ',', '.') }}
+                            </p>
+                        </a>
+                    @else
+                        <!-- If user is not logged in, redirect to login -->
+                        <a href="{{ route('login') }}" class="block">
+                            <img alt="{{ $product->name }}" class="product w-full max-w-[300px] h-auto" src="{{ asset($product->image) }}" loading="lazy"/>
+                            <h3 class="mt-4 text-lg sm:text-xl font-bold text-black text-center">
+                                {{ $product->name }}
+                            </h3>
+                            <p class="text-black text-center">
+                                IDR {{ number_format($product->price, 0, ',', '.') }}
+                            </p>
+                            <p class="text-blue-500 text-center mt-2">
+                                Login to view details
+                            </p>
+                        </a>
+                    @endif
+                </div>
+            @empty
+                <p class="text-black text-center col-span-1 sm:col-span-2 md:col-span-3 text-xl sm:text-2xl">
+                    We Are So Sorry! <br> The Product is Out of Stock Right Now <br> Please Stay Tune With Us..
+                </p>
+            @endforelse
         </div>
-    </section>
+    </div>
+</section>
 <!-- End Section -->
 
 <!-- / 'THE ALMOST FORGOTTEN, NOW REDEFINED' -->
@@ -79,30 +96,23 @@
           </a>
         </div>
 
-        <!-- Tiga gambar kecil horizontal -->
-        <div class="hidden sm:flex flex-wrap sm:flex-nowrap justify-start gap-4 sm:gap-6 md:gap-14 mt-6">
-          <img src="{{ asset ('assets/images/home/landingpage/model1.jpg') }}" alt="Model 1" class="w-full sm:w-[150px] md:w-[200px] h-auto object-contain" />
-          <img src="{{ asset ('assets/images/home/landingpage/model2.jpg') }}" alt="Model 2" class="w-full sm:w-[150px] md:w-[200px] h-auto object-contain" />
-          <img src="{{ asset ('assets/images/home/landingpage/model3.jpg') }}" alt="Model 3" class="w-full sm:w-[150px] md:w-[200px] h-auto object-contain" />
-        </div>
-        
-        <!-- Grid mobile view -->
-        <div class="grid grid-cols-2 gap-2 mt-4 sm:hidden">
-          <img src="{{ asset ('assets/images/home/landingpage/model1.jpg') }}" alt="Model 1" class="w-full h-auto object-contain" />
-          <img src="{{ asset ('assets/images/home/landingpage/model2.jpg') }}" alt="Model 2" class="w-full h-auto object-contain" />
-          <img src="{{ asset ('assets/images/home/landingpage/model3.jpg') }}" alt="Model 3" class="w-full h-auto object-contain" />
+        <!-- Layout gambar model baru: 3 gambar kecil horizontal di bawah teks -->
+        <div class="flex justify-start gap-12 sm:gap-12 mt-6">
+          <img src="{{ asset ('assets/images/home/landingpage/model1.jpg') }}" alt="Model 1" class="w-[160px] sm:w-[200px] md:w-[220px] h-auto object-cover"/>
+          <img src="{{ asset ('assets/images/home/landingpage/model2.jpg') }}" alt="Model 2" class="w-[160px] sm:w-[200px] md:w-[220px] h-auto object-cover"/>
+          <img src="{{ asset ('assets/images/home/landingpage/model3.jpg') }}" alt="Model 3" class="w-[160px] sm:w-[200px] md:w-[220px] h-auto object-cover"/>
         </div>
       </div>
 
       <!-- Kanan: Gambar besar -->
       <div class="flex justify-center md:justify-end items-start mt-4 sm:mt-8">
-        <img src="{{ asset ('assets/images/home/landingpage/model4.png') }}" alt="Model Large" class="h-auto w-full max-w-[300px] md:max-w-none md:h-[400px] lg:h-[560px] object-contain" />
+        <img src="{{ asset ('assets/images/home/landingpage/model4.png') }}" alt="Model Large" class="h-auto w-full max-w-[420px] md:max-w-[440px] lg:max-w-[480px] object-cover" />
       </div>
     </div>
   </div>
 </section>
 <!-- End Section -->
-
+ 
   <!--  / NOT JUST FASHION–A CULTURE -->
   <section id="privilege" class="section-padding py-8 sm:py-10 mb-4">
     <div class="container mx-auto px-4">

@@ -30,4 +30,20 @@ class LoginController extends Controller
         request()->merge([$fieldType => $login]);
         return $fieldType;
     }
+
+    // Override the redirectTo method
+    protected function redirectTo()
+    {
+        $user = Auth::user();
+
+        switch ($user->utype) {
+            case 'ADM':
+                return route('admin.index'); // Redirect admin to /admin/dashboard
+            case 'OWN':
+                return route('owner.index'); // Redirect owner to /owner/dashboard
+            case 'USR':
+            default:
+                return route('customer-user.index'); // Redirect user to /account-dashboard
+        }
+    }
 }

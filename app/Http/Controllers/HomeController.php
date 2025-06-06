@@ -22,17 +22,15 @@ class HomeController extends Controller
     {
         $query = Product::query();
 
-        // Terapkan filter kategori jika disediakan
         if ($request->has('category')) {
             $query->where('category', $request->category);
         }
 
-        // Terapkan filter ukuran jika disediakan
         if ($request->has('size')) {
             $query->where('size', 'like', '%' . $request->size . '%');
         }
 
-        $products = $query->get();
+        $products = $query->paginate(9);
 
         return view('customer-user.shop', compact('products'));
     }
@@ -41,12 +39,23 @@ class HomeController extends Controller
     {
         $product = Product::findOrFail($id);
         
-        // Ambil produk terkait (kategori sama)
         $relatedProducts = Product::where('category', $product->category)
                                 ->where('id', '!=', $product->id)
                                 ->take(4)
                                 ->get();
         
         return view('customer-user.product-detail', compact('product', 'relatedProducts'));
+    }
+
+    public function search(Request $request)
+    {
+        $query = $request->input('q', '');
+
+        $products = Product::where('name', 'like', "%{$query}%")
+                           ->orWhere('category', 'like', "%{$query}%")
+                           ->take(5)
+                           ->get();
+
+        return response()->json($products);
     }
 }

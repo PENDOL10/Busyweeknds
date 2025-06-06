@@ -3,7 +3,7 @@
 @section('content')
 <main class="bg-white mt-12">
     <!-- Shop Header -->
-    <div class="px-4 md:px-18 py-12 mx-2">
+    <div class="px-4 md:px-18 py-12 mt-12 mx-2">
         <h1 class="text-4xl font-bold text-black">All Product</h1>
     </div>
 
@@ -20,7 +20,7 @@
                     <li><a href="{{ route('shop', ['category' => 'Headwear']) }}" class="hover:underline {{ request('category') == 'Headwear' ? 'font-bold' : '' }}">Headwear</a></li>
                 </ul>
             </div>
-            
+
             <!-- Size -->
             <div class="text-black">
                 <h2 class="text-2xl font-bold mb-4">Size</h2>
@@ -38,22 +38,35 @@
         <section class="w-full lg:w-4/5">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                 @forelse ($products as $product)
-                <div class="product-card mb-12">
-                    <a href="{{ route('product.show', $product->id) }}" class="block">
-                        <div class="mb-4 overflow-hidden">
-                            <img src="{{ asset($product->image) }}" alt="{{ $product->name }}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
-                        </div>
-                        <h3 class="text-lg font-medium mb-1">{{ $product->name }}</h3>
-                        <p class="text-sm">IDR {{ number_format($product->price, 0, ',', '.') }}</p>
-                    </a>
-                </div>
+                    <div class="product-card mb-12">
+                        @if (Auth::check())
+                            <!-- If user is logged in, allow access to product detail -->
+                            <a href="{{ route('product.show', $product->id) }}" class="block">
+                                <div class="mb-4 overflow-hidden">
+                                    <img src="{{ asset($product->image) }}" alt="{{ $product->name }}" class="w-auto h-auto object-cover hover:scale-105 transition-transform duration-300">
+                                </div>
+                                <h3 class="text-black font-bold mb-1 text-xl text-center">{{ $product->name }}</h3>
+                                <p class="text-black text-reguler text-center">IDR {{ number_format($product->price, 0, ',', '.') }}</p>
+                            </a>
+                        @else
+                            <!-- If user is not logged in, redirect to login -->
+                            <a href="{{ route('login') }}" class="block">
+                                <div class="mb-4 overflow-hidden">
+                                    <img src="{{ asset($product->image) }}" alt="{{ $product->name }}" class="w-auto h-auto object-cover hover:scale-105 transition-transform duration-300">
+                                </div>
+                                <h3 class="text-black font-bold mb-1 text-xl text-center">{{ $product->name }}</h3>
+                                <p class="text-black text-reguler text-center">IDR {{ number_format($product->price, 0, ',', '.') }}</p>
+                                <p class="text-blue-500 text-center mt-2">
+                                    Login to view details
+                                </p>
+                            </a>
+                        @endif
+                    </div>
                 @empty
-                <div class="col-span-3 text-center py-12">
-                    <p class="text-xl text-gray-500">No products available.</p>
-                </div>
+                    <div class="col-span-3 text-center py-12">
+                        <p class="text-xl text-gray-500">No products available.</p>
+                    </div>
                 @endforelse
             </div>
         </section>
-    </div>
-</main>
-@endsection
+     @endsection
