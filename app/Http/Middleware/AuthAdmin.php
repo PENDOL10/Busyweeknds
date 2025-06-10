@@ -10,7 +10,6 @@ class AuthAdmin
 {
     public function handle(Request $request, Closure $next)
     {
-        // Debug: Log or dump to confirm this middleware is being called
         \Log::info('AuthAdmin middleware called for user: ' . (Auth::check() ? Auth::user()->email : 'Unauthenticated'));
 
         if (!Auth::check()) {
@@ -21,6 +20,6 @@ class AuthAdmin
             return $next($request);
         }
 
-        return redirect()->route('index')->with('error', 'You do not have permission to access the admin dashboard.');
+        return redirect('/')->with('error', 'You do not have permission to access the admin dashboard.');
     }
 }

@@ -6,14 +6,12 @@ use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    
+    /**
+     * Redirect admin ke dashboard utama
+     * Route: /admin -> redirect ke /admin/dashboard
+     */
     public function index()
     {
-        return view('admin.index');
-    }
-
-    public function ownerDashboard()
-    {
-        return view('owner.index');
+        return redirect()->route('admin.dashboard');
     }
 }

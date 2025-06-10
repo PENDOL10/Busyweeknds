@@ -10,13 +10,16 @@ export default {
         "./resources/**/*.vue",
     ],
     theme: {
-        
         extend: {
             fontFamily: {
                 poppins: ["Poppins", "sans-serif"],
             },
             colors: {
-                body: "#ffffff",
+                navy: {
+                    900: "#1e3a8a",
+                    800: "#2c4d9b",
+                    600: "#4b6cb7",
+                },
             },
         },
     },
