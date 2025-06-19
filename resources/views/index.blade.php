@@ -5,10 +5,10 @@
 <!-- Hero Section -->
 <section class="relative w-full text-white overflow-hidden">
   <img src=" {{ asset('/assets/images/home/landingpage/section.png') }}" alt="Hero Image" class="absolute inset-0 w-full h-full object-cover"/>
-  <div class="relative z-10 flex flex-col justify-start h-[60vh] sm:h-[80vh] md:h-[100vh] lg:h-[115vh] pt-4 px-4 sm:px-6 mt-[30px]">
+  <div class="relative z-10 flex flex-col justify-start h-[60vh] sm:h-[80vh] md:h-[100vh] lg:h-[115vh] pt-4 px-4 sm:px-6 mt-[50px]">
 
     <!-- Judul -->
-    <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold" style="color: var(--tw-primary);" >
+    <h1 class="text-7xl sm:text-7xl md:text-8xl font-bold" style="color: var(--tw-primary);" >
     <span>Busy</span><br>
     <span>
       Week<span class="text-white" style="-webkit-text-stroke: 1px;">nds.</span>

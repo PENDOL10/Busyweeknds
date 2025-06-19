@@ -4,46 +4,37 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
+    /*
+    |--------------------------------------------------------------------------
+    | Login Controller
+    |--------------------------------------------------------------------------
+    |
+    | This controller handles authenticating users for the application and
+    | redirecting them to your home screen. The controller uses a trait
+    | to conveniently provide its functionality to your applications.
+    |
+    */
+
     use AuthenticatesUsers;
 
-    protected $redirectTo = '/'; // Default redirect, overridden in authenticated method
+    /**
+     * Where to redirect users after login.
+     *
+     * @var string
+     */
+    protected $redirectTo = '/home';
 
-    protected function authenticated(Request $request, $user)
-    {
-        // Arahkan semua pengguna ke index setelah login
-        return redirect()->route('index');
-    }
-
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
-    }
-
-    public function username()
-    {
-        $login = request()->input('login');
-        $fieldType = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'telephone';
-        request()->merge([$fieldType => $login]);
-        return $fieldType;
-    }
-
-    // Override the redirectTo method
-    protected function redirectTo()
-    {
-        $user = Auth::user();
-
-        switch ($user->utype) {
-            case 'ADM':
-                return route('admin.index'); // Redirect admin to /admin/dashboard
-            case 'OWN':
-                return route('owner.index'); // Redirect owner to /owner/dashboard
-            case 'USR':
-            default:
-                return route('customer-user.index'); // Redirect user to /account-dashboard
-        }
+        $this->middleware('auth')->only('logout');
     }
 }

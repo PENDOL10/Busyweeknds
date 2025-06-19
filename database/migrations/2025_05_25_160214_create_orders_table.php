@@ -10,6 +10,10 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            // Tambahkan kolom user_id di sini
+            // Pastikan tabel 'users' sudah ada dan memiliki kolom 'id'
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Menggunakan 'users' sebagai referensi tabel
+
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('address')->nullable();

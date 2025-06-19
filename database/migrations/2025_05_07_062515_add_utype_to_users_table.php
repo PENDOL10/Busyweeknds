@@ -15,7 +15,7 @@ class AddUtypeToUsersTable extends Migration
             if (!Schema::hasColumn('users', 'telephone')) {
                 $table->string('telephone')->nullable()->after('email');
             }
-        });
+        }); 
     }
 
     public function down()

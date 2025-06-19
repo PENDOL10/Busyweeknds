@@ -5,21 +5,40 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log; // Ini sudah benar
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthAdmin
 {
-    public function handle(Request $request, Closure $next)
+    /**
+     * Handle an incoming request.
+     */
+    public function handle(Request $request, Closure $next): Response
     {
-        \Log::info('AuthAdmin middleware called for user: ' . (Auth::check() ? Auth::user()->email : 'Unauthenticated'));
+        // Log untuk debugging - HAPUS TANDA '\'
+        Log::info('AuthAdmin middleware called', [
+            'user_authenticated' => Auth::check(),
+            'user_email' => Auth::check() ? Auth::user()->email : 'Unauthenticated',
+            'user_type' => Auth::check() ? Auth::user()->utype : null
+        ]);
 
+        // Cek apakah user sudah login
         if (!Auth::check()) {
-            return redirect()->route('login')->with('error', 'Please login to access this page.');
+            return redirect()->route('login')
+                ->with('error', 'Silakan login untuk mengakses halaman ini.');
         }
 
-        if (Auth::user()->utype === 'ADM') {
-            return $next($request);
+        // Cek apakah user adalah admin
+        if (Auth::user()->utype !== 'ADM') {
+            Log::warning('Non-admin user tried to access admin area', [
+                'user_email' => Auth::user()->email,
+                'user_type' => Auth::user()->utype
+            ]);
+            
+            return redirect('/')
+                ->with('error', 'Anda tidak memiliki izin untuk mengakses dashboard admin.');
         }
 
-        return redirect('/')->with('error', 'You do not have permission to access the admin dashboard.');
+        return $next($request);
     }
 }

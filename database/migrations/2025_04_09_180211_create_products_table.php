@@ -15,6 +15,8 @@ class CreateProductsTable extends Migration
             $table->string('image');
             $table->string('category')->default('T-Shirt');
             $table->string('size')->nullable();
+            $table->integer('stock')->default(10);
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

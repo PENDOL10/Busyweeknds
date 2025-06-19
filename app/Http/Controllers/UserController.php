@@ -9,7 +9,8 @@ class UserController extends Controller
 {
     public function index()
     {
-        return view('customer-user.index');
+        $user = auth()->user();
+        return view('customer-user.index', compact('user'));
     }
 
     public function updatePassword(Request $request)

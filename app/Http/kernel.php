@@ -18,7 +18,8 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
-        \App\Http\Middleware\RedirectBasedOnRole::class,
+        // Hapus RedirectBasedOnRole dari middleware global jika tidak diperlukan
+        // \App\Http\Middleware\RedirectBasedOnRole::class,
     ];
 
     /**
@@ -47,7 +48,7 @@ class Kernel extends HttpKernel
      *
      * @var array
      */
-    protected $routeMiddleware = [
+    protected $middlewareAliases = [
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'auth.session' => \Illuminate\Session\Middleware\AuthenticateSession::class,
@@ -59,7 +60,8 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'auth.admin' => \App\Http\Middleware\AuthAdmin::class,
-        'auth.user' => \App\Http\Middleware\AuthUser::class,
+        'auth.user' => \App\Http\Middleware\AuthUser::class,  // Pastikan ini ada
         'auth.owner' => \App\Http\Middleware\AuthOwner::class,
+        'redirect.role' => \App\Http\Middleware\RedirectBasedOnRole::class,
     ];
 }

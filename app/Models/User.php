@@ -16,6 +16,7 @@ class User extends Authenticatable
         'password',
         'telephone', // Tambahkan telephone ke fillable
         'utype',    // Tambahkan utype ke fillable
+        'status',
     ];
 
     protected $hidden = [

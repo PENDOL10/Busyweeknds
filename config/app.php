@@ -65,7 +65,7 @@ return [
     |
     */
 
-    'timezone' => env('APP_TIMEZONE', 'UTC'),
+    'timezone' => 'Asia/Jakarta',
 
     /*
     |--------------------------------------------------------------------------
@@ -121,6 +121,18 @@ return [
     'maintenance' => [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
+    ],
+
+      /*
+    |--------------------------------------------------------------------------
+    | Class Aliases
+    |--------------------------------------------------------------------------
+    */
+    'aliases' => [
+        // ... other aliases
+        'Auth' => Illuminate\Support\Facades\Auth::class,
+        'Route' => Illuminate\Support\Facades\Route::class,
+        // ... other aliases
     ],
 
 ];

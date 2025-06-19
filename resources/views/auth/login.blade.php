@@ -42,7 +42,7 @@
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
                     <div class="mb-2">
-                        <input id="login" type="text" name="login" placeholder="Email or Telephone" value="{{ old('login') }}" required autofocus
+                        <input id="email" type="text" name="email" placeholder="Email or Telephone" value="{{ old('email') }}" required autofocus
                             class="input input-bordered border border-black w-full mt-1 text-gray-700 bg-white" />
                     </div>
 

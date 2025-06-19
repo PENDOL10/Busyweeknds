@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,16 +12,21 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Panggil UserSeeder
+        $this->call(UserSeeder::class); 
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
-    }
+        // Panggil CategorySeeder (penting agar categories ada sebelum product)
+        $this->call(CategorySeeder::class); 
 
-    public function product(): void
-    {
-        $this->call(ProductSeeder::class);
+        // Panggil ProductSeeder
+        $this->call(ProductSeeder::class); 
+
+        // Contoh User::factory() jika Anda ingin membuatnya di sini,
+        // tetapi biasanya lebih baik di dalam UserSeeder.
+        // User::factory(10)->create(); 
+        // User::factory()->create([
+        //     'name' => 'Test User',
+        //     'email' => 'test@example.com',
+        // ]);
     }
 }

@@ -13,7 +13,7 @@ class RegisterController extends Controller
 {
     use RegistersUsers;
 
-    protected $redirectTo = '/'; // Arahkan ke landing page ('index')
+    protected $redirectTo = '/home';
 
     public function __construct()
     {
@@ -25,7 +25,7 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'telephone' => ['required', 'string', 'regex:/^[0-9]{10,12}$/', 'unique:users'], // Izinkan 10-12 digit
+            'telephone' => ['required', 'numeric', 'digits:12', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
@@ -35,9 +35,8 @@ class RegisterController extends Controller
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'telephone' => $data['telephone'],
+            'telephone' => $data['telephone'], // Add this line to save the telephone
             'password' => Hash::make($data['password']),
-            'utype' => 'USR',
         ]);
     }
 }

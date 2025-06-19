@@ -33,7 +33,7 @@
         <!-- Header Nav -->
         <header id="header" class="header header-fullwidth header-transparent-bg">
             <nav id="MainNavbar" class="navbar fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out px-2 sm:px-5 py-1 flex flex-wrap justify-between items-center navbar-visible">
-                <div class="flex items-center space-x-2 sm:space-x-4">
+                <div class="flex items-center space-x-2 sm:space-x-4 ml-4 sm:ml-6">
                     <!-- Logo -->
                     <a href="{{ route('index') }}" class="text-lg fw-bold">
                         <img src="{{ asset('assets/images/Logo.png') }}" alt="Uomo" class="logo h-8 sm:h-12"/>
@@ -54,10 +54,10 @@
                 </div>
 
                 <!-- Icons - All aligned to same height -->
-                <div class="flex items-center space-x-2 sm:space-x-4 h-fit">
-                    <div class="icons flex items-center space-x-2 sm:space-x-3 h-fit">
+                <div class="flex items-center space-x-2 sm:space-x-4 h-fit mr-2 sm:mr-2">
+                    <div class="icons flex items-center space-x-2 sm:space-x-3 h-fit    ">
                         <!-- Search Form -->
-                        <div class="relative flex items-center h-fit">
+                        <div class="relative flex items-center h-fit ">
                             <button id="searchBtn" class="header-tools__item flex items-center justify-center" aria-label="Search products">
                                 <iconify-icon icon="material-symbols:search-rounded" width="22" height="22" style="color: #fff"></iconify-icon>
                             </button>
@@ -89,26 +89,25 @@
                                     <span class="hidden sm:inline text-xs sm:text-sm font-semibold text-white truncate max-w-[80px] sm:max-w-full leading-none">{{ Auth::user()->name }}</span>
                                 </label>
                                 <ul tabindex="0" class="menu dropdown-content mt-2 p-2 shadow bg-white rounded-box w-52">
-                                    <li>
+                                    <li class="rounded-box text-blue-700">
                                         @if(Auth::user()->utype === 'ADM')
-                                            {{-- PERBAIKAN: Gunakan route admin.index yang akan redirect ke dashboard --}}
-                                            <a href="{{ route('admin.index') }}">Dashboard Admin</a>
+                                            <a href="{{ route('admin.dashboard') }}">Dashboard Admin</a>
                                         @elseif(Auth::user()->utype === 'OWN')
                                             <a href="{{ route('owner.index') }}">Dashboard Owner</a>
                                         @else
                                             <a href="{{ route('customer-user.index') }}">Profile User</a>
                                         @endif
                                     </li>
-                                    <li>
+                                    <li class="rounded-box text-red-500">
                                         <form method="POST" action="{{ route('logout') }}">
                                             @csrf
-                                            <button type="submit" class="w-full text-left">Logout</button>
+                                            <button type="submit" class="w-full text-left text-red-500">Logout</button>
                                         </form>
                                     </li>
                                 </ul>
                             </div>
                             @endguest
-                        </div>
+                        </div>          
                     </div>
                 </div>
             </nav>

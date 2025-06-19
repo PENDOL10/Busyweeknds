@@ -26,7 +26,8 @@ Route::get('/search', [HomeController::class, 'search'])->name('search.products'
 // Routes that require authentication
 Route::middleware(['auth'])->group(function () {
     // Product detail and checkout routes
-    Route::get('/shop/product/{id}', [HomeController::class, 'index'])->name('product.show');
+    Route::get('/shop/product/{id}', [HomeController::class, 'show'])->name('product.show');
+    Route::get('/about', [HomeController::class, 'about'])->name('about');
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
     Route::post('/cart/save-for-checkout', [CheckoutController::class, 'saveCartForCheckout'])->name('cart.save-for-checkout');
@@ -48,35 +49,34 @@ Route::middleware(['auth', 'auth.user'])->group(function () {
     Route::patch('/account/update-password', [UserController::class, 'updatePassword'])->name('account.update-password');
     Route::patch('/account/update-telephone', [UserController::class, 'updateTelephone'])->name('account.update-telephone');
 });
+Route::middleware(\App\Http\Middleware\AuthUser::class)->get('/customer-user/index', [UserController::class, 'index'])->name('customer-user.index');
 
 // Admin routes (for ADM role)
 Route::prefix('admin')->middleware(['auth', 'auth.admin'])->name('admin.')->group(function () {
     // Route utama admin yang redirect ke dashboard
-    Route::get('/', [AdminController::class, 'index'])->name('index');
+    Route::get('/', [AdminDashboardController::class, 'index'])->name('index');
     
-    // Route dashboard admin - PERBAIKAN: gunakan AdminDashboardController
+    // Route dashboard admin
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
     
-    // Routes untuk management
-    Route::get('/users', [UserAdminController::class, 'index'])->name('users.index');
-    Route::get('/users/{user}', [UserAdminController::class, 'show'])->name('users.show');
+    // Profile route
+    Route::get('/profile', [AdminDashboardController::class, 'profile'])->name('profile');
+    Route::put('/profile/update', [AdminDashboardController::class, 'updateProfile'])->name('profile.update');
+    
+    // Resource routes untuk management
+    Route::resource('users', UserAdminController::class)->except(['create', 'store', 'edit', 'update']);
     Route::post('/users/{user}/suspend', [UserAdminController::class, 'suspend'])->name('users.suspend');
-    Route::delete('/users/{user}', [UserAdminController::class, 'destroy'])->name('users.destroy');
-    
-    Route::get('/products', [ProductAdminController::class, 'index'])->name('products.index');
-    Route::get('/products/create', [ProductAdminController::class, 'create'])->name('products.create');
-    Route::post('/products', [ProductAdminController::class, 'store'])->name('products.store');
-    Route::get('/products/{product}/edit', [ProductAdminController::class, 'edit'])->name('products.edit');
-    Route::put('/products/{product}', [ProductAdminController::class, 'update'])->name('products.update');
-    Route::delete('/products/{product}', [ProductAdminController::class, 'destroy'])->name('products.destroy');
-    
-    Route::get('/orders', [OrderAdminController::class, 'index'])->name('orders.index');
-    Route::get('/orders/{order}', [OrderAdminController::class, 'show'])->name('orders.show');
+    Route::post('/users/{user}/activate', [UserAdminController::class, 'activate'])->name('users.activate');
+    Route::get('/dashboard/sales-data', [AdminDashboardController::class, 'getSalesData'])->name('dashboard.sales-data');
+    Route::resource('products', ProductAdminController::class);
+    Route::resource('orders', OrderAdminController::class)->only(['index', 'show']);
     Route::post('/orders/{order}/status', [OrderAdminController::class, 'updateStatus'])->name('orders.update-status');
 });
-Route::middleware(\App\Http\Middleware\AuthAdmin::class)->get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.index');
 
 // Owner routes (for OWN role)
 Route::middleware(['auth', 'auth.owner'])->group(function () {
     Route::get('/owner/dashboard', [OwnerController::class, 'index'])->name('owner.index');
 });
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
