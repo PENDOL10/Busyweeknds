@@ -93,7 +93,7 @@
                                         @if(Auth::user()->utype === 'ADM')
                                             <a href="{{ route('admin.dashboard') }}">Dashboard Admin</a>
                                         @elseif(Auth::user()->utype === 'OWN')
-                                            <a href="{{ route('owner.index') }}">Dashboard Owner</a>
+                                            <a href="{{ route('owner.dashboard') }}">Dashboard Owner</a>
                                         @else
                                             <a href="{{ route('customer-user.index') }}">Profile User</a>
                                         @endif

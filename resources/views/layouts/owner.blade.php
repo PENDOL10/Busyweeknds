@@ -67,35 +67,23 @@
             x-transition:leave-end="-translate-x-full"
             class="fixed lg:static z-40 w-64 h-full bg-[#010BEB] from-brand-900 to-brand-800 text-white shadow-2xl transition-all duration-300 ease-in-out">
             <div class="flex flex-start p-4 left-0 border-b border-brand-700">
-                <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3">
+                <a href="{{ route('owner.dashboard') }}" class="flex items-center gap-3">
                     <img src="{{ asset('assets/images/Logo.png') }}" alt="Logo" class="h-30 w-auto">
-                    <span class="text-3xl font-bold text-white transition-opacity duration-300">Admin</span>
+                    <span class="text-3xl font-bold text-white transition-opacity duration-300">Owner</span>
                 </a>
             </div>
             <nav class="flex-1 space-y-2 px-4 py-6">
-                <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 rounded-xl px-4 py-3 transition-all {{ Route::is('admin.dashboard') ? 'bg-[#5DA9FF] text-white' : 'hover:bg-[#5DA9FF]' }}">
+                <a href="{{ route('owner.dashboard') }}" class="flex items-center gap-3 rounded-xl px-4 py-3 transition-all {{ Route::is('admin.dashboard') ? 'bg-[#5DA9FF] text-white' : 'hover:bg-[#5DA9FF]' }}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24">
                     <path fill="currentColor" d="M13 9V3h8v6zM3 13V3h8v10zm10 8V11h8v10zM3 21v-6h8v6zm2-10h4V5H5zm10 8h4v-6h-4zm0-12h4V5h-4zM5 19h4v-2H5zm4-2"></path>
                 </svg>                    
                 <span class="text-lg transition-opacity duration-300">Dashboard</span>
+                <a href="{{ route('owner.settings') }}" class="flex items-center gap-3 rounded-xl px-4 py-3 transition-all {{ Route::is('admin.dashboard') ? 'bg-[#5DA9FF] text-white' : 'hover:bg-[#5DA9FF]' }}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 2048 2048">
+                    <path fill="currentColor" d="M1783 988v18q0 9 1 18v18q0 9-1 18l259 161l-159 383l-297-68q-24 26-50 50l68 297l-383 159l-161-259h-18q-9 0-18 1h-18q-9 0-18-1l-161 259l-383-159l68-297q-26-24-50-50l-297 68L6 1221l259-161v-18q0-9-1-18v-18q0-9 1-18L6 827l159-383l297 68q24-26 50-50l-68-297L827 6l161 259h18q9 0 18-1h18q9 0 18 1L1221 6l383 159l-68 297q26 24 50 50l297-68l159 383zm-117 130q2-24 4-47t2-48q0-23-2-47t-4-47l236-147l-86-208l-271 63q-31-38-63-70t-71-64l63-271l-208-86l-148 236q-23-2-47-4t-47-2q-24 0-47 2t-48 4L782 146l-208 86l63 271q-38 31-70 63t-64 71l-271-63l-86 208l236 148q-2 24-4 47t-2 48q0 23 2 47t4 47l-236 147l86 208l271-63q31 38 63 70t71 64l-63 271l208 86l148-236q23 2 47 4t47 2q24 0 47-2t48-4l147 236l208-86l-63-271q38-31 70-63t64-71l271 63l86-208zm-642-470q78 0 146 29t120 81t80 119t30 147q0 78-29 146t-81 120t-119 80t-147 30q-78 0-146-29t-120-81t-80-119t-30-147q0-78 29-146t81-120t119-80t147-30m0 640q55 0 103-20t84-57t56-84t21-103q0-55-20-103t-57-84t-84-56t-103-21q-55 0-103 20t-84 57t-56 84t-21 103q0 55 20 103t57 84t84 56t103 21"></path>
+                </svg>                   
+                <span class="text-lg transition-opacity duration-300">Settings</span>
                 </a>
-                <a href="{{ route('admin.products.index') }}" class="flex items-center gap-3 rounded-xl px-4 py-3 transition-all {{ Route::is('admin.products.*') ? 'bg-[#5DA9FF] text-white' : 'hover:bg-[#5DA9FF]' }}">
-                <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 256 256">
-                    <path fill="currentColor" d="m235.65 121.64l-54.27-81.41A14 14 0 0 0 169.73 34H86.27a14 14 0 0 0-11.65 6.23l-54.27 81.41a14 14 0 0 0-1.86 11.45l21.44 78.59A14 14 0 0 0 53.43 222H80a14 14 0 0 0 14-14v-18h68v18a14 14 0 0 0 14 14h26.57a14 14 0 0 0 13.5-10.32l21.44-78.59a14 14 0 0 0-1.86-11.45M80 178a2 2 0 0 1-2-2V65.49L106 82v54a6 6 0 0 0 12 0V89.07l7 4.1a6 6 0 0 0 6.1 0l6.95-4.1V128a6 6 0 0 0 12 0V82l28-16.51V176a2 2 0 0 1-2 2Zm6.27-132h83.46a2 2 0 0 1 1.66.89l4.1 6.15L128 81L80.51 53l4.1-6.15a2 2 0 0 1 1.66-.85M82 208a2 2 0 0 1-2 2H53.43a2 2 0 0 1-1.92-1.47l-21.44-78.6a2 2 0 0 1 .27-1.63L66 74.8V176a14 14 0 0 0 14 14h2Zm143.93-78.07l-21.44 78.6a2 2 0 0 1-1.92 1.47H176a2 2 0 0 1-2-2v-18h2a14 14 0 0 0 14-14V74.8l35.66 53.5a2 2 0 0 1 .27 1.63"></path>
-                </svg>                
-                <span class="text-lg transition-opacity duration-300">Products</span>
-                </a>
-                <a href="{{ route('admin.orders.index') }}" class="flex items-center gap-3 rounded-xl px-4 py-3 transition-all {{ Route::is('admin.orders.*') ? 'bg-[#5DA9FF] text-white' : 'hover:bg-[#5DA9FF]' }}">
-                <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24">
-                    <path fill="currentColor" d="m17.371 19.827l2.84-2.796l-.626-.627l-2.214 2.183l-.955-.975l-.627.632zM6.77 8.731h10.462v-1H6.769zM18 22.116q-1.671 0-2.835-1.165Q14 19.787 14 18.116t1.165-2.836T18 14.116t2.836 1.164T22 18.116q0 1.67-1.164 2.835Q19.67 22.116 18 22.116M4 20.769V5.616q0-.672.472-1.144T5.616 4h12.769q.67 0 1.143.472q.472.472.472 1.144v5.944q-.244-.09-.484-.154q-.241-.064-.516-.1v-5.69q0-.231-.192-.424T18.384 5H5.616q-.231 0-.424.192T5 5.616V19.05h6.344q.068.41.176.802q.109.392.303.748l-.034.034l-1.135-.826l-1.346.961l-1.346-.961l-1.346.961l-1.347-.961zm2.77-4.5h4.709q.056-.275.138-.515t.192-.485H6.77zm0-3.769h7.31q.49-.387 1.05-.645q.56-.259 1.197-.355H6.769zM5 19.05V5z"></path>
-                </svg>
-                <span class="text-lg transition-opacity duration-300">Orders</span>
-                </a>
-                <a href="{{ route('admin.users.index') }}" class="flex items-center gap-3 rounded-xl px-4 py-3 transition-all {{ Route::is('admin.users.*') ? 'bg-[#5DA9FF] text-white' : 'hover:bg-[#5DA9FF]' }}">
-                <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 16 16">
-                    <path fill="none" stroke="currentColor" strokeLinejoin="round" d="M2.5 14v-.5a4 4 0 0 1 4-4h1a4 4 0 0 1 4 4v.5m2.421-10a1 1 0 0 0-.414.093c-.13.062-.25.152-.35.265l-.156.18l-.16-.18a1.1 1.1 0 0 0-.349-.265a.97.97 0 0 0-.827 0q-.198.094-.35.265a1.32 1.32 0 0 0-.315.866c0 .324.113.635.316.866L13 8l1.683-1.91c.203-.231.316-.542.316-.866s-.113-.635-.316-.866a1.1 1.1 0 0 0-.35-.265A1 1 0 0 0 13.922 4ZM9.5 5a2.5 2.5 0 1 1-5 0a2.5 2.5 0 0 1 5 0Z" strokeWidth={1}></path>
-                </svg>
-                <span class="text-lg transition-opacity duration-300">Customers</span>
                 </a>
             </nav>
             <div class="p-4 border-t border-brand-700">
@@ -130,7 +118,7 @@
                             <svg x-bind:class="{ 'rotate-180': dropdownOpen }" class="h-4 w-4 text-brand-700 transition-transform" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                         </button>
                         <div x-show="dropdownOpen" @click.away="dropdownOpen = false" x-cloak class="absolute right-0 mt-2 w-48 origin-top-right rounded-xl bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                            <a href="{{ route('admin.profile') }}" class="block px-4 py-2 text-sm text-slate-700 hover:bg-brand-50">My Profile</a>
+                            <a href="{{ route('owner.profile') }}" class="block px-4 py-2 text-sm text-slate-700 hover:bg-brand-50">My Profile</a>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button type="submit" class="block w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-brand-50">Sign out</button>

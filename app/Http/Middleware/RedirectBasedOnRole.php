@@ -16,7 +16,7 @@ class RedirectBasedOnRole
             } elseif (Auth::user()->utype === 'USR') {
                 return redirect()->route('customer-user.index');
             } elseif (Auth::user()->utype === 'OWN') {
-                return redirect()->route('owner.index');
+                return redirect()->route('owner.dashboard');
             }
         }
         return $next($request);

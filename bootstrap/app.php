@@ -11,9 +11,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        // Registrasi middleware alias di sini
         $middleware->alias([
             'auth.admin' => \App\Http\Middleware\AuthAdmin::class,
-            'redirect.role' => \App\Http\Middleware\RedirectBasedOnRole::class,
+            'auth.user' => \App\Http\Middleware\AuthUser::class,
+            'auth.owner' => \App\Http\Middleware\AuthOwner::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

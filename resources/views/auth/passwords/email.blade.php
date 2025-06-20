@@ -1,68 +1,40 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="mytheme">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Login - {{ config('app.name', 'Laravel') }}</title>
+@extends('layouts.app')
 
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <meta name="author" content="bsyweeknds" />
-    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}" type="image/x-icon">
-    <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.8.0/dist/full.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-        integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer">
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="relative min-h-screen w-full overflow-x-hidden font-poppins">
-    <!-- Background image full screen -->
+@section('content')
+<div class="relative min-h-screen w-full overflow-x-hidden font-poppins">
     <div class="absolute inset-0 -z-10">
         <img src="{{ asset('/assets/images/bg-login.png') }}" alt="background-login" class="w-full h-full object-cover">
     </div>
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Reset Password') }}</div>
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+    <div class="flex flex-col items-center justify-center min-h-screen py-10 px-4">
+        <div class="w-90 max-w-md space-y-8">
+            <div class="bg-white p-8 rounded-lg shadow-md">
+                <h2 class="text-3xl font-semibold text-black mb-4">{{ __('Reset Password') }}</h2>
+                <p class="text-black mb-6">Enter your email to receive a password reset link.</p>
 
-                    <form method="POST" action="{{ route('password.email') }}">
-                        @csrf
+                @if (session('status'))
+                    <div class="alert alert-success mb-4 text-sm"> {{-- Menggunakan alert-success DaisyUI --}}
+                        {{ session('status') }}
+                    </div>
+                @endif
 
-                        <div class="row mb-3">
-                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
+                <form method="POST" action="{{ route('password.email') }}">
+                    @csrf
 
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                    <div class="mb-6">
+                        <input id="email" type="email" name="email" placeholder="Email Address" value="{{ old('email') }}" required autofocus
+                               class="input input-bordered border border-black w-full mt-1 text-gray-700 bg-white @error('email') border-red-500 @enderror" />
+                        @error('email')
+                            <p class="text-red-500 text-xs mt-1" role="alert">{{ $message }}</p>
+                        @enderror
+                    </div>
 
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Send Password Reset Link') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+                    <button type="submit" class="btn w-full bg-[#010BEB] text-white hover:bg-[#0009c4] transition-colors duration-300 border-none focus:outline-none">
+                        {{ __('Send Password Reset Link') }}
+                    </button>
+                </form>
             </div>
         </div>
     </div>
 </div>
-</body>
+@endsection

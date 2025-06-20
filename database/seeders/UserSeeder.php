@@ -17,9 +17,9 @@ class UserSeeder extends Seeder
     {
         // Admin User
         User::firstOrCreate(
-            ['email' => 'admin@example.com'],
+            ['email' => 'admin1.bsywknds@gmail.com'],
             [
-                'name' => 'Admin User',
+                'name' => 'admin 1',
                 'password' => Hash::make('password'), // Change to a strong password in production
                 'utype' => 'ADM',
                 'telephone' => '081234567890',
