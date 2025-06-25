@@ -28,30 +28,43 @@
         </div>
 
         <div class="flex flex-col items-center gap-6">
+            {{-- Display Front Image --}}
             @php
-                // Logika untuk menentukan path gambar yang benar untuk tampilan produk
-                $imageUrl = '';
-                if ($product->image) {
-                    // Cek apakah path dimulai dengan 'products/' (dari storage, hasil upload)
-                    if (str_starts_with($product->image, 'products/')) {
-                        $imageUrl = asset('storage/' . $product->image);
-                    } else { // Asumsi path lain adalah dari public/assets (dari seeder)
-                        $imageUrl = asset($product->image);
+                $imageFrontUrl = '';
+                if ($product->image_front) {
+                    if (str_starts_with($product->image_front, 'products/')) {
+                        $imageFrontUrl = asset('storage/' . $product->image_front);
+                    } else {
+                        $imageFrontUrl = asset($product->image_front);
                     }
                 } else {
-                    $imageUrl = 'https://via.placeholder.com/500x500?text=No+Image'; // Placeholder jika tidak ada gambar
+                    $imageFrontUrl = 'https://via.placeholder.com/500x500?text=No+Front+Image';
                 }
             @endphp
-            <div class="w-auto h-auto hover:shadow-lg transition-shadow">
-                <img src="{{ $imageUrl }}" 
-                     alt="{{ $product->name }}" 
-                     class="w-auto h-auto object-cover rounded-lg">
-            </div>
-            
-            <div class="w-auto h-auto hover:shadow-lg transition-shadow">
-                <img src="{{ $imageUrl }}" 
-                     alt="{{ $product->name }} Back View" 
-                     class="w-auto h-auto object-cover rounded-lg">
+            {{-- Front Image --}}
+            <div class="w-full max-w-[340px] h-full aspect-square bg-white rounded-2xl">
+                <img src="{{ $imageFrontUrl }}"
+                alt="{{ $product->name }} Front View"
+                class="w-full h-full object-cover object-center transform hover:scale-105 transition-transform duration-300 ease-in-out">
+           </div>
+
+            {{-- Display Back Image --}}
+            @php
+                $imageBackUrl = '';
+                if ($product->image_back) {
+                    if (str_starts_with($product->image_back, 'products/')) {
+                        $imageBackUrl = asset('storage/' . $product->image_back);
+                    } else {
+                        $imageBackUrl = asset($product->image_back);
+                    }
+                } else {
+                    $imageBackUrl = 'https://via.placeholder.com/500x500?text=No+Back+Image';
+                }
+            @endphp
+            <div class="w-full max-w-[340px] h-full aspect-square bg-white rounded-2xl">
+                <img src="{{ $imageBackUrl }}"
+                alt="{{ $product->name }} Back View"
+                class="w-full h-full object-cover object-center transform hover:scale-105 transition-transform duration-300 ease-in-out">
             </div>
         </div>
 
@@ -105,20 +118,21 @@
             <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-8">You Might Also Like</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-12 gap-x-8">
                 @foreach($relatedProducts as $relatedProduct)
-                    {{-- Each product item container --}}
-                    {{-- ADDED HOVER EFFECTS HERE --}}
                     <div class="flex flex-col items-center bg-white p-4 rounded-lg shadow-sm transition-all duration-300 transform hover:scale-105 hover:shadow-lg h-full">
                         <a href="{{ route('product.show', $relatedProduct->id) }}" class="flex flex-col items-center w-full h-full">
                             @php
                                 $relatedImageUrl = '';
-                                if ($relatedProduct->image) {
-                                    if (str_starts_with($relatedProduct->image, 'products/')) {
-                                        $relatedImageUrl = asset('storage/' . $relatedProduct->image);
+                                // Prefer image_front if available, otherwise fallback to 'image'
+                                $imageSource = $relatedProduct->image_front ?? $relatedProduct->image;
+
+                                if ($imageSource) {
+                                    if (str_starts_with($imageSource, 'products/')) {
+                                        $relatedImageUrl = asset('storage/' . $imageSource);
                                     } else {
-                                        $relatedImageUrl = asset($relatedProduct->image);
+                                        $relatedImageUrl = asset($imageSource);
                                     }
                                 } else {
-                                    $relatedImageUrl = 'https://via.placeholder.com/300x400?text=No+Image'; 
+                                    $relatedImageUrl = 'https://via.placeholder.com/300x400?text=No+Image';
                                 }
                             @endphp
                             <div class="w-full h-72 overflow-hidden mb-4 rounded-lg">
@@ -135,6 +149,7 @@
         </div>
     @endif
 
+    {{-- Cart Popup (keep as is) --}}
     <div id="cart-popup" class="fixed top-0 right-0 h-full w-full max-w-sm bg-white shadow-2xl transform translate-x-full transition-transform duration-300 z-50">
         <div class="flex flex-col h-full">
             <div class="flex justify-between items-center p-6 mt-[50px]">
@@ -163,7 +178,7 @@
 
     <div id="cart-overlay" class="fixed inset-0 bg-black opacity-0 pointer-events-none transition-opacity duration-300 z-40"></div>
 </main>
-@endsection 
+@endsection
 
 @push('scripts')
 <script>
@@ -249,13 +264,13 @@ function getProductImageUrl(imagePath) {
     // Check if path starts with 'products/' (from storage)
     if (imagePath.startsWith('products/')) {
         return STORAGE_BASE_URL + '/' + imagePath;
-    } 
+    }
     // Check if path starts with '/' (from public/assets)
     else if (imagePath.startsWith('/')) {
         return ASSET_BASE_URL + imagePath.substring(1); // asset() handles leading slash correctly
     }
     // Fallback or other cases
-    return ASSET_BASE_URL + imagePath; 
+    return ASSET_BASE_URL + imagePath;
 }
 
 
@@ -282,7 +297,8 @@ document.getElementById('add-to-cart').addEventListener('click', function() {
             price: {{ $product->price }},
             size: selectedSize,
             quantity: amount,
-            image: "{{ $product->image }}" // Pass the raw image path
+            // Use image_front for the cart image if available, otherwise fallback to 'image'
+            image: "{{ $product->image_front ?? $product->image }}"
         };
 
         const existingItemIndex = cart.findIndex(item => item.id === product.id && item.size === product.size);
@@ -320,7 +336,7 @@ function updateCartUI() {
 
             // Use the new helper function for image URL
             const cartItemImageUrl = getProductImageUrl(item.image);
-            
+
             const itemElement =
                 `<div class="flex items-start space-x-4 border-b pb-4">
                     <img src="${cartItemImageUrl}" alt="${item.name}" class="w-20 h-20 object-cover rounded-lg border-2 border-blue-600">
@@ -348,7 +364,7 @@ function updateCartUI() {
 }
 
 function updateCartItem(index, change) {
-    const productMaxStock = {{ $product->stock }}; 
+    const productMaxStock = {{ $product->stock }};
     const currentQuantity = cart[index].quantity;
 
     if (change > 0 && (currentQuantity + change) > productMaxStock) {

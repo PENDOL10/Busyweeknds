@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Product;
-use App\Models\Category; // Import Category model
+use App\Models\Category;
 
 class ProductSeeder extends Seeder
 {
@@ -15,7 +15,7 @@ class ProductSeeder extends Seeder
         $sweaterCategory = Category::where('name', 'Sweater')->first();
         $headwearCategory = Category::where('name', 'Headwear')->first();
 
-        // Fallback in case categories are somehow missing (shouldn't happen with correct seeding order)
+        // Fallback in case categories are somehow missing
         if (!$tshirtCategory) {
             $tshirtCategory = Category::firstOrCreate(['name' => 'T-Shirt'], ['slug' => 't-shirt']);
         }
@@ -25,7 +25,6 @@ class ProductSeeder extends Seeder
         if (!$headwearCategory) {
             $headwearCategory = Category::firstOrCreate(['name' => 'Headwear'], ['slug' => 'headwear']);
         }
-
 
         $products = [
             [
@@ -39,6 +38,8 @@ class ProductSeeder extends Seeder
                 'shipping_cost' => 15000.00,
                 'category_id' => $sweaterCategory->id,
                 'image' => '/assets/images/products/product3.png', // Updated path relative to storage/app/public
+                'image_front' => '/assets/images/products/product3.png', // Explicit front view
+                'image_back' => '/assets/images/products/product3_back.png',   // Back view
             ],
             [
                 'name' => 'White Silent Hours',
@@ -51,6 +52,8 @@ class ProductSeeder extends Seeder
                 'shipping_cost' => 10000.00,
                 'category_id' => $tshirtCategory->id,
                 'image' => '/assets/images/products/product2.png', // Updated path
+                'image_front' => '/assets/images/products/product2.png', // Explicit front view
+                'image_back' => '/assets/images/products/product2_back.png',   // Back view
             ],
             [
                 'name' => 'Blue Silent Hours',
@@ -63,6 +66,8 @@ class ProductSeeder extends Seeder
                 'shipping_cost' => 10000.00,
                 'category_id' => $tshirtCategory->id,
                 'image' => '/assets/images/products/Product1.png', // Updated path
+                'image_front' => '/assets/images/products/Product1.png', // Explicit front view
+                'image_back' => '/assets/images/products/Product1_back.png',   // Back view
             ],
             [
                 'name' => 'Eclipse Curve Tee',
@@ -75,6 +80,8 @@ class ProductSeeder extends Seeder
                 'shipping_cost' => 10000.00,
                 'category_id' => $tshirtCategory->id,
                 'image' => '/assets/images/products/product4.png', // Updated path
+                'image_front' => '/assets/images/products/product4.png', // Explicit front view
+                'image_back' => '/assets/images/products/product4.png',   // Back view
             ],
             [
                 'name' => 'Phantom Flare Zip Hoodie',
@@ -87,6 +94,8 @@ class ProductSeeder extends Seeder
                 'shipping_cost' => 20000.00,
                 'category_id' => $sweaterCategory->id,
                 'image' => '/assets/images/products/product5.png', // Updated path
+                'image_front' => '/assets/images/products/product5.png', // Explicit front view
+                'image_back' => '/assets/images/products/product5_back.png',   // Back view
             ],
             [
                 'name' => 'Distressed Denim Statement Cap',
@@ -99,6 +108,8 @@ class ProductSeeder extends Seeder
                 'shipping_cost' => 5000.00,
                 'category_id' => $headwearCategory->id,
                 'image' => '/assets/images/products/product6.jpg', // Updated path
+                'image_front' => '/assets/images/products/product6.jpg', // Explicit front view
+                'image_back' => '/assets/images/products/product6_back.jpg',   // Back view
             ],
             [
                 'name' => 'Fairplay Racing Shirt',
@@ -111,6 +122,8 @@ class ProductSeeder extends Seeder
                 'shipping_cost' => 10000.00,
                 'category_id' => $tshirtCategory->id,
                 'image' => '/assets/images/products/product7.jpg', // Updated path
+                'image_front' => '/assets/images/products/product7.jpg', // Explicit front view
+                'image_back' => '/assets/images/products/product7.jpg',   // Back view
             ],
             [
                 'name' => 'Strides Memory Knit',
@@ -123,6 +136,8 @@ class ProductSeeder extends Seeder
                 'shipping_cost' => 15000.00,
                 'category_id' => $sweaterCategory->id,
                 'image' => '/assets/images/products/product8.png', // Updated path
+                'image_front' => '/assets/images/products/product8.png', // Explicit front view
+                'image_back' => '/assets/images/products/product8.png',   // Back view
             ],
             [
                 'name' => 'Ape Icon Beanie',
@@ -135,6 +150,8 @@ class ProductSeeder extends Seeder
                 'shipping_cost' => 5000.00,
                 'category_id' => $headwearCategory->id,
                 'image' => '/assets/images/products/product9.jpg', // Updated path
+                'image_front' => '/assets/images/products/product9.jpg', // Explicit front view
+                'image_back' => '/assets/images/products/product9.jpg',   // Back view
             ],
             [
                 'name' => 'Venezia 95 Denim Jacket',
@@ -147,6 +164,8 @@ class ProductSeeder extends Seeder
                 'shipping_cost' => 5000.00,
                 'category_id' => $sweaterCategory->id,
                 'image' => '/assets/images/products/product10.png', // Updated path
+                'image_front' => '/assets/images/products/product10.png', // Explicit front view
+                'image_back' => '/assets/images/products/product10.png',   // Back view
             ],
         ];
 
