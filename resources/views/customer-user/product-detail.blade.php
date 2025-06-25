@@ -3,29 +3,29 @@
 @section('content')
 <main class=" mt-[110px] container mx-auto px-4 md:px-6 lg:px-8">
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-16">
-            <div class="flex flex-col">
-                <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">{{ $product->name }}</h1>
+        <div class="flex flex-col">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">{{ $product->name }}</h1>
 
-                <div class="mb-6">
-                    <h2 class="text-xl font-semibold text-gray-900 mb-2">Description</h2>
-                    <p class="text-gray-600 leading-relaxed text-justify max-w-[250px] md:max-w-[350px] break-words">{{ $product->description ?? 'No description available.' }}</p>
-                </div>
-                <div class="flex justify-between items-center mb-3 mr-[30px]">
-                    <h2 class="text-xl font-semibold text-gray-900">Size Guide</h2>
-                    <button id="size-guide-toggle" class="text-sm text-blue-600 hover:underline">Size Guide</button>
-                </div>
-                <div id="size-guide" class="text-sm text-gray-500 mt-1 hidden">
-                    <ul class="list-disc list-inside">
-                        <li>XS: W 46 cm, L 68 cm</li>
-                        <li>S: W 48 cm, L 70 cm</li>
-                        <li>M: W 50 cm, L 72 cm</li>
-                        <li>L: W 52 cm, L 74 cm</li>
-                        <li>XL: W 54 cm, L 76 cm</li>
-                        <li>XXL: W 56 cm, L 78 cm</li>
-                        <li>One Size</li>
-                    </ul>
-                </div>
+            <div class="mb-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-2">Description</h2>
+                <p class="text-gray-600 leading-relaxed text-justify max-w-[250px] md:max-w-[350px] break-words">{{ $product->description ?? 'No description available.' }}</p>
             </div>
+            <div class="flex justify-between items-center mb-3 mr-[30px]">
+                <h2 class="text-xl font-semibold text-gray-900">Size Guide</h2>
+                <button id="size-guide-toggle" class="text-sm text-blue-600 hover:underline">Size Guide</button>
+            </div>
+            <div id="size-guide" class="text-sm text-gray-500 mt-1 hidden">
+                <ul class="list-disc list-inside">
+                    <li>XS: W 46 cm, L 68 cm</li>
+                    <li>S: W 48 cm, L 70 cm</li>
+                    <li>M: W 50 cm, L 72 cm</li>
+                    <li>L: W 52 cm, L 74 cm</li>
+                    <li>XL: W 54 cm, L 76 cm</li>
+                    <li>XXL: W 56 cm, L 78 cm</li>
+                    <li>One Size</li>
+                </ul>
+            </div>
+        </div>
 
         <div class="flex flex-col items-center gap-6">
             @php
@@ -103,10 +103,12 @@
     @if($relatedProducts->isNotEmpty())
         <div class="mt-[80px] mb-12">
             <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-8">You Might Also Like</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-12 gap-x-8">
                 @foreach($relatedProducts as $relatedProduct)
-                    <div class="p-4 text-center hover:shadow-lg transition-shadow">
-                        <a href="{{ route('product.show', $relatedProduct->id) }}">
+                    {{-- Each product item container --}}
+                    {{-- ADDED HOVER EFFECTS HERE --}}
+                    <div class="flex flex-col items-center bg-white p-4 rounded-lg shadow-sm transition-all duration-300 transform hover:scale-105 hover:shadow-lg h-full">
+                        <a href="{{ route('product.show', $relatedProduct->id) }}" class="flex flex-col items-center w-full h-full">
                             @php
                                 $relatedImageUrl = '';
                                 if ($relatedProduct->image) {
@@ -116,12 +118,16 @@
                                         $relatedImageUrl = asset($relatedProduct->image);
                                     }
                                 } else {
-                                    $relatedImageUrl = 'https://via.placeholder.com/150x150?text=No+Image';
+                                    $relatedImageUrl = 'https://via.placeholder.com/300x400?text=No+Image'; 
                                 }
                             @endphp
-                            <img src="{{ $relatedImageUrl }}" alt="{{ $relatedProduct->name }}" class="w-68 h-38 object-cover mb-4 rounded-lg ml-10">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-1">{{ $relatedProduct->name }}</h3>
-                            <p class="text-gray-600">IDR {{ number_format($relatedProduct->price, 0, ',', '.') }}</p>
+                            <div class="w-full h-72 overflow-hidden mb-4 rounded-lg">
+                                <img src="{{ $relatedImageUrl }}" alt="{{ $relatedProduct->name }}" class="w-full h-full object-cover object-center">
+                            </div>
+                            <div class="flex-grow text-center w-full">
+                                <h3 class="text-lg font-semibold text-gray-900 mb-1 leading-tight">{{ $relatedProduct->name }}</h3>
+                                <p class="text-gray-600">IDR {{ number_format($relatedProduct->price, 0, ',', '.') }}</p>
+                            </div>
                         </a>
                     </div>
                 @endforeach
@@ -141,7 +147,7 @@
             </div>
 
             <div id="cart-items" class="flex-1 overflow-y-auto p-6 space-y-4">
-                </div>
+            </div>
 
             <div class="p-6">
                 <div class="flex justify-between items-center mb-4 border-t border-gray-600">
@@ -157,7 +163,7 @@
 
     <div id="cart-overlay" class="fixed inset-0 bg-black opacity-0 pointer-events-none transition-opacity duration-300 z-40"></div>
 </main>
-@endsection
+@endsection 
 
 @push('scripts')
 <script>
@@ -342,12 +348,6 @@ function updateCartUI() {
 }
 
 function updateCartItem(index, change) {
-    // Ensure product stock is not exceeded when increasing quantity
-    // This part requires access to the *original* product stock, which is currently
-    // only available directly for the product on the page.
-    // For cart items from local storage, we'd ideally fetch this or store it in cart.
-    // For simplicity, we'll use the product stock from the current page for now.
-    // A more robust solution would store `max_stock` in the cart item itself or fetch from API.
     const productMaxStock = {{ $product->stock }}; 
     const currentQuantity = cart[index].quantity;
 

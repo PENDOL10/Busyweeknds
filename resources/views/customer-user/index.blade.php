@@ -4,11 +4,11 @@
     <!-- Background Image Section -->
     <div class="relative w-full h-40 md:h-48 lg:h-56 bg-cover bg-center" style="background-image: url('{{ asset('/assets/images/section.png') }}')">
         <div class="absolute inset-0 bg-black bg-opacity-10"></div>
-        <!-- Profile Title -->
         <div class="absolute inset-0 flex items-center justify-center">
             <h1 class="text-4xl font-bold text-[#0009c4] text-center mt-12">PROFILE</h1>
         </div>
     </div>
+
     <!-- Main Content -->
     <main class="flex-grow">
         <div class="container mx-auto px-4 py-8">
@@ -59,53 +59,64 @@
         </div>
     </main>
 
-    <!-- Password Change Modal -->
-    <dialog id="password-modal" class="modal">
-        <div class="modal-box bg-white relative">
-            <h2 class="font-bold text-black">Change Password</h2>
-            <!-- Ikon Silang untuk Menutup Modal -->
-            <span class="absolute top-4 right-4 text-black text-4xl cursor-pointer" onclick="document.getElementById('password-modal').close()">&times;</span>
-            <form method="POST" action="{{ route('account.update-password') }}">
-                @csrf
-                @method('PATCH')
-                <div class="py-4 space-y-4">
-                    <div>
-                        <label class="label text-black">Current Password</label>
-                        <input type="password" name="current_password" placeholder="Input Current Password" class="input input-bordered w-full border-black font-reguler text-gray-700 bg-white" required />
+    <!-- Modal Change Password -->
+    <dialog id="password-modal" class="z-50 bg-transparent p-0 m-0 border-0">
+        <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="relative bg-white p-6 rounded-xl w-full max-w-md shadow-lg">
+                <h2 class="font-bold text-black text-xl mb-4">Change Password</h2>
+                <span class="absolute top-4 right-4 text-black text-3xl cursor-pointer" onclick="document.getElementById('password-modal').close()">&times;</span>
+                <form method="POST" action="{{ route('account.update-password') }}">
+                    @csrf
+                    @method('PATCH')
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-black mb-1">Current Password</label>
+                            <input type="password" name="current_password" class="w-full border border-black bg-white rounded-md p-2 text-gray-700" required>
+                        </div>
+                        <div>
+                            <label class="block text-black mb-1">New Password</label>
+                            <input type="password" name="new_password" class="w-full border border-black bg-white rounded-md p-2 text-gray-700" required>
+                        </div>
+                        <div>
+                            <label class="block text-black mb-1">Confirm New Password</label>
+                            <input type="password" name="new_password_confirmation" class="w-full border border-black bg-white  rounded-md p-2 text-gray-700" required>
+                        </div>
                     </div>
-                    <div>
-                        <label class="label text-black">New Password</label>
-                        <input type="password" name="new_password" placeholder="New Password" class="input input-bordered w-full border-black font-reguler text-gray-700 bg-white" required />
+                    <div class="mt-6">
+                        <button type="submit" class="w-full bg-blue-700 text-white py-2 px-4 rounded-md font-semibold hover:bg-blue-800 transition">Change Password</button>
                     </div>
-                    <div>
-                        <label class="label text-black">Confirm New Password</label>
-                        <input type="password" name="new_password_confirmation" placeholder="Retype New Password" class="input input-bordered w-full border-black font-reguler text-gray-700 bg-white" required />
-                    </div>
-                </div>
-                <div class="modal-action">
-                    <button type="submit" class="btn btn-primary w-full">Change Password</button>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </dialog>
 
-    <!-- Telephone Change Modal -->
-    <dialog id="telephone-modal" class="modal">
-        <div class="modal-box bg-white relative">
-            <h2 class="font-bold text-black">Change Telephone</h2>
-            <!-- Ikon Silang untuk Menutup Modal -->
-            <span class="absolute top-4 right-4 text-black text-4xl cursor-pointer" onclick="document.getElementById('telephone-modal').close()">&times;</span>
-            <form method="POST" action="{{ route('account.update-telephone') }}">
-                @csrf
-                @method('PATCH')
-                <div class="py-4">
-                    <label class="label text-black">New Telephone Number</label>
-                    <input type="tel" name="telephone" placeholder="Retype New Telephone" class="input input-bordered w-full border border-black font-reguler text-gray-700 bg-white" value="{{ Auth::user()->telephone }}" required />
-                </div>
-                <div class="modal-action">
-                    <button type="submit" class="btn btn-primary w-full">Change Telephone</button>
-                </div>
-            </form>
+    <!-- Modal Change Telephone -->
+    <dialog id="telephone-modal" class="z-50 bg-transparent p-0 m-0 border-0">
+        <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="relative bg-white p-6 rounded-xl w-full max-w-md shadow-lg">
+                <h2 class="font-bold text-black text-xl mb-4">Change Telephone</h2>
+                <span class="absolute top-4 right-4 text-black text-3xl cursor-pointer" onclick="document.getElementById('telephone-modal').close()">&times;</span>
+                <form method="POST" action="{{ route('account.update-telephone') }}">
+                    @csrf
+                    @method('PATCH')
+                    <div class="mb-4">
+                        <label class="block text-black mb-1">New Telephone Number</label>
+                        <input type="tel" name="telephone" value="{{ Auth::user()->telephone }}" class="w-full border border-black bg-white rounded-md p-2 text-gray-700" required>
+                    </div>
+                    <div class="mt-6">
+                        <button type="submit" class="w-full bg-blue-700 text-white py-2 px-4 rounded-md font-semibold hover:bg-blue-800 transition">Change Telephone</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </dialog>
+
+    <!-- Optional: close modal on outside click -->
+    <script>
+        document.querySelectorAll("dialog").forEach(dialog => {
+            dialog.addEventListener("click", (e) => {
+                if (e.target === dialog) dialog.close();
+            });
+        });
+    </script>
 @endsection
