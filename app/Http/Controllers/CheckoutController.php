@@ -19,11 +19,13 @@ class CheckoutController extends Controller
         }
 
         $cart = $request->input('cart', []);
-        
+
         if (!is_array($cart) || empty($cart)) {
             return response()->json(['success' => false, 'message' => 'Invalid cart data']);
         }
 
+        // The image paths in the $cart array coming from the frontend (product detail JS)
+        // should already be full URLs due to getProductImageUrl, so no direct change here.
         Cookie::queue('cart', json_encode($cart), 1440);
 
         return response()->json(['success' => true]);
@@ -35,12 +37,51 @@ class CheckoutController extends Controller
             return redirect()->route('login')->with('error', 'Please login to view your cart.');
         }
 
-        $cart = json_decode(request()->cookie('cart') ?? '[]', true);
-        $subtotal = array_reduce($cart, fn($sum, $item) => $sum + ($item['price'] * $item['quantity']), 0);
+        $cartFromCookie = json_decode(request()->cookie('cart') ?? '[]', true);
+        $detailedCart = [];
+        $subtotal = 0;
+
+        foreach ($cartFromCookie as $item) {
+            $product = Product::find($item['id']);
+            if ($product) {
+                // Determine the correct image path to use for this product
+                // Prioritize image_front, then image, then a placeholder.
+                $imagePathForDisplay = $product->image_front ?? $product->image;
+
+                // Resolve the image URL explicitly on the server side using asset()
+                $resolvedImageUrl = 'https://via.placeholder.com/150'; // Default placeholder
+
+                if ($imagePathForDisplay) {
+                    if (str_starts_with($imagePathForDisplay, 'products/')) {
+                        $resolvedImageUrl = asset('storage/' . $imagePathForDisplay);
+                    } else {
+                        // This else case is for images not in 'products/' subfolder, e.g., directly in 'public' or old format
+                        $resolvedImageUrl = asset($imagePathForDisplay);
+                    }
+                }
+                // If $item['image'] from the cookie is already a full URL, use it directly
+                // This ensures flexibility for old cart data, but the above logic is safer for fresh product data.
+                if (filter_var($item['image'], FILTER_VALIDATE_URL)) {
+                    $resolvedImageUrl = $item['image'];
+                }
+
+
+                $detailedCart[] = [
+                    'id' => $product->id,
+                    'name' => $product->name,
+                    'price' => $product->price,
+                    'image' => $resolvedImageUrl, // Pass the fully resolved URL to the view
+                    'size' => $item['size'],
+                    'quantity' => $item['quantity'],
+                ];
+                $subtotal += ($product->price * $item['quantity']);
+            }
+        }
+
         $shippingCost = 40000;
         $total = $subtotal + $shippingCost;
 
-        return view('customer-user.checkout', compact('cart', 'subtotal', 'shippingCost', 'total'));
+        return view('customer-user.checkout', compact('detailedCart', 'subtotal', 'shippingCost', 'total'));
     }
 
     public function store(Request $request)
@@ -60,8 +101,12 @@ class CheckoutController extends Controller
             'phone' => 'required|string|max:15',
             'payment_proof' => 'required|image|max:2048',
         ]);
-        
+
         $cart = json_decode(request()->cookie('cart') ?? '[]', true);
+        if (empty($cart)) {
+            return redirect()->route('shop')->with('error', 'Your cart is empty.');
+        }
+
         $subtotal = array_reduce($cart, fn($sum, $item) => $sum + ($item['price'] * $item['quantity']), 0);
         $shippingCost = 40000;
         $total = $subtotal + $shippingCost;
@@ -119,26 +164,34 @@ class CheckoutController extends Controller
 
         $cart = json_decode(request()->cookie('cart') ?? '[]', true);
 
-        $item = [
-            'id' => $request->product_id,
-            'name' => $request->name,
-            'price' => $request->price,
-            'image' => $request->image,
+        $product = Product::find($request->product_id);
+
+        if (!$product) {
+            return redirect()->back()->with('error', 'Product not found.');
+        }
+
+        $itemToAdd = [
+            'id' => $product->id,
+            'name' => $product->name,
+            'price' => $product->price,
+            // Construct the image URL here using blade's asset logic, as this is server-side
+            // This is the source for the `image` property in the cookie
+            'image' => asset('storage/' . ($product->image_front ?? $product->image)), // Ensure absolute URL
             'size' => $request->size,
             'quantity' => $request->quantity ?? 1,
         ];
 
         $itemExists = false;
         foreach ($cart as &$cartItem) {
-            if ($cartItem['id'] == $item['id'] && $cartItem['size'] == $item['size']) {
-                $cartItem['quantity'] += $item['quantity'];
+            if ($cartItem['id'] == $itemToAdd['id'] && $cartItem['size'] == $itemToAdd['size']) {
+                $cartItem['quantity'] += $itemToAdd['quantity'];
                 $itemExists = true;
                 break;
             }
         }
 
         if (!$itemExists) {
-            $cart[] = $item;
+            $cart[] = $itemToAdd;
         }
 
         Cookie::queue('cart', json_encode($cart), 1440);

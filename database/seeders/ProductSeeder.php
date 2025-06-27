@@ -167,6 +167,20 @@ class ProductSeeder extends Seeder
                 'image_front' => '/assets/images/products/product10.png', // Explicit front view
                 'image_back' => '/assets/images/products/product10.png',   // Back view
             ],
+            [
+                'name' => 'Blurred Vision Stripe Shirt',
+                'description' => 'Your shirt doesnt need to shout when it can stare back. The Blurred Vision Stripe Shirt fuses clean vertical pinstripes with a bold, artsy face print that fades in like a dream—and hits like a statement. Perfectly weird, perfectly wearable. Whether you are at a gallery or just flexing on the gram, this drip speaks louder than words.',
+                'sizes' => ['S', 'M', 'L', 'XL'],
+                'gender' => 'Men',
+                'price' => 779000.00,
+                'discount' => null,
+                'stock' => 4,
+                'shipping_cost' => 5000.00,
+                'category_id' => $tshirtCategory->id,
+                'image' => '/assets/images/products/product11.jpg', // Updated path
+                'image_front' => '/assets/images/products/product11.jpg', // Explicit front view
+                'image_back' => '/assets/images/products/product11.jpg',   // Back view
+            ],
         ];
 
         foreach ($products as $productData) {

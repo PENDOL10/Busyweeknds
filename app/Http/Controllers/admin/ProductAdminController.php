@@ -12,7 +12,7 @@ class ProductAdminController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Product::with('category'); // Eager load the category relationship
+        $query = Product::with('category');
 
         if ($request->filled('search')) {
             $query->where('name', 'like', '%' . $request->input('search') . '%');
@@ -51,33 +51,41 @@ class ProductAdminController extends Controller
             'stock' => 'required|integer|min:0',
             'shipping_cost' => 'nullable|numeric|min:0',
             'category_id' => 'required|exists:categories,id',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            // Validation for explicit front and back images
+            'image_front' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image_back' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('products', 'public');
+        $data = $request->only([
+            'name', 'description', 'sizes', 'gender', 'price',
+            'discount', 'stock', 'shipping_cost', 'category_id'
+        ]);
+
+        // Handle image_front upload
+        if ($request->hasFile('image_front')) {
+            $data['image_front'] = $request->file('image_front')->store('products', 'public');
+            // Crucially, set the main 'image' field to the front image for shop page consistency
+            $data['image'] = $data['image_front'];
+        } else {
+            // If image_front is required, this else block should technically not be reached unless validation is skipped.
+            $data['image_front'] = null;
+            $data['image'] = null;
         }
 
-        Product::create([
-            'name' => $request->name,
-            'description' => $request->description,
-            'sizes' => $request->sizes,
-            'gender' => $request->gender,
-            'price' => $request->price,
-            'discount' => $request->discount,
-            'stock' => $request->stock,
-            'shipping_cost' => $request->shipping_cost,
-            'category_id' => $request->category_id,
-            'image' => $imagePath,
-        ]);
+        // Handle image_back upload
+        if ($request->hasFile('image_back')) {
+            $data['image_back'] = $request->file('image_back')->store('products', 'public');
+        } else {
+            $data['image_back'] = null; // Set to null if no back image is provided
+        }
+
+        Product::create($data);
 
         return redirect()->route('admin.products.index')->with('success', 'Product added successfully.');
     }
 
     public function edit($id)
     {
-        // Ambil data produk dan eager load category
         $product = Product::with('category')->findOrFail($id);
         $categories = Category::all();
         return view('admin.products.edit', compact('product', 'categories'));
@@ -98,7 +106,9 @@ class ProductAdminController extends Controller
             'stock' => 'required|integer|min:0',
             'shipping_cost' => 'nullable|numeric|min:0',
             'category_id' => 'required|exists:categories,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048' // 'nullable' for update
+            // Images are nullable for update, as they might not be changed
+            'image_front' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image_back' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
         $data = $request->only([
@@ -106,13 +116,29 @@ class ProductAdminController extends Controller
             'discount', 'stock', 'shipping_cost', 'category_id'
         ]);
 
-        if ($request->hasFile('image')) {
-            // Delete old image if exists
-            if ($product->image && Storage::disk('public')->exists($product->image)) {
-                Storage::disk('public')->delete($product->image);
+        // Handle image_front update
+        if ($request->hasFile('image_front')) {
+            // Delete old image_front if it exists
+            if ($product->image_front && Storage::disk('public')->exists($product->image_front)) {
+                Storage::disk('public')->delete($product->image_front);
             }
-            $data['image'] = $request->file('image')->store('products', 'public');
+            $data['image_front'] = $request->file('image_front')->store('products', 'public');
+            // Update the general 'image' field as well
+            $data['image'] = $data['image_front'];
         }
+        // If image_front is NOT provided in the request, and current image_front exists, retain it.
+        // If you want to explicitly clear it via the form, you'd add a hidden field or checkbox.
+
+        // Handle image_back update
+        if ($request->hasFile('image_back')) {
+            // Delete old image_back if it exists
+            if ($product->image_back && Storage::disk('public')->exists($product->image_back)) {
+                Storage::disk('public')->delete($product->image_back);
+            }
+            $data['image_back'] = $request->file('image_back')->store('products', 'public');
+        }
+        // If image_back is NOT provided, and current image_back exists, retain it.
+        // If you want to explicitly clear it via the form, you'd add a hidden field or checkbox.
 
         $product->update($data);
 
@@ -122,9 +148,21 @@ class ProductAdminController extends Controller
     public function destroy($id)
     {
         $product = Product::findOrFail($id);
-        if ($product->image && Storage::disk('public')->exists($product->image)) {
-            Storage::disk('public')->delete($product->image);
+
+        // Delete image_front if it exists
+        if ($product->image_front && Storage::disk('public')->exists($product->image_front)) {
+            Storage::disk('public')->delete($product->image_front);
         }
+        // Delete image_back if it exists
+        if ($product->image_back && Storage::disk('public')->exists($product->image_back)) {
+            Storage::disk('public')->delete($product->image_back);
+        }
+        // Delete the general 'image' field if it's separate or a duplicate.
+        // The condition `($product->image && $product->image !== $product->image_front)` prevents deleting the same file twice.
+        if ($product->image && Storage::disk('public')->exists($product->image) && $product->image !== $product->image_front) {
+             Storage::disk('public')->delete($product->image);
+        }
+
         $product->delete();
         return redirect()->route('admin.products.index')->with('success', 'Product deleted successfully.');
     }

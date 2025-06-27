@@ -1,11 +1,11 @@
+{{-- resources/views/customer-user/checkout.blade.php --}}
+
 @extends('layouts.app')
 
 @section('content')
 <main class="bg-white mt-12 container mx-auto px-4 md:px-6 lg:px-8">
     <div class="flex flex-col lg:flex-row gap-12 py-12">
-        <!-- Delivery Form and Cart in 50/50 Layout -->
         <div class="w-full grid grid-cols-1 lg:grid-cols-2 gap-12">
-            <!-- Delivery Form -->
             <div>
                 <h1 class="text-3xl font-bold text-black mb-6">Delivery</h1>
                 <form action="{{ route('checkout.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
@@ -31,7 +31,7 @@
                         </div>
                         <div class="md:col-span-2">
                             <input type="text" name="city" class="form-control w-full" placeholder="City" aria-label="City" required>
-                        </div>          
+                        </div>
                         <div class="col">
                             <input type="text" name="province" class="form-control w-full" placeholder="Province" aria-label="Province" required>
                         </div>
@@ -43,16 +43,13 @@
                         </div>
                     </div>
 
-                    <!-- Payment Section -->
                     <div class="mt-6">
                         <h2 class="text-3xl font-bold text-black mt-4 mb-2">Payment</h2>
                         <p class="text-gray-600 text-sm mb-1">Send payment to BCA account</p>
                         <p class="text-gray-600 text-sm mb-1">129303282 A/N Khayyuna Faza</p>
                         <p class="text-gray-600 text-sm mb-4">Please insert Your Proof of Payment Below.</p>
-                        
-                        <!-- Upload Area -->
+
                         <div id="upload-area" class="mt-1 flex justify-center px-6 pt-3 pb-6 border-2 border-gray-300 border-dashed rounded-[25px] transition-all duration-300">
-                            <!-- Default Upload UI -->
                             <div id="upload-placeholder" class="space-y-1 text-center">
                                 <iconify-icon icon="zondicons:cloud-upload" width="60" height="60" style="color: #737373"></iconify-icon>
                                 <div class="flex text-sm text-gray-600">
@@ -65,8 +62,6 @@
                                 <p class="text-xs text-gray-500">PNG, JPG up to 2MB</p>
                                 <p id="file-name" class="text-sm text-green-600 mt-2 hidden"></p>
                             </div>
-
-                            <!-- Image Preview (Hidden by default) -->
                             <div id="image-preview" class="hidden relative w-full max-w-md">
                                 <img id="preview-image" src="" alt="Payment Proof Preview" class="w-full h-auto max-h-80 object-contain rounded-lg shadow-lg">
                                 <div class="mt-4 text-center">
@@ -87,12 +82,13 @@
                 </form>
             </div>
 
-            <!-- Cart Summary -->
             <div>
                 <h2 class="text-2xl font-bold mb-4">My Cart</h2>
-                @if (count($cart) > 0)
-                    @foreach ($cart as $item)
+                {{-- Iterate over $detailedCart, which now contains fully resolved image URLs --}}
+                @if (count($detailedCart) > 0)
+                    @foreach ($detailedCart as $item)
                         <div class="flex items-start space-x-4 border-base-200 pb-4 mb-4">
+                            {{-- Image src directly uses $item['image'] as it's already a full URL --}}
                             <img src="{{ $item['image'] }}" alt="{{ $item['name'] }}" class="w-20 h-20 object-cover rounded-lg border-2 border-primary">
                             <div class="flex-1">
                                 <h3 class="text-xl font-bold">{{ $item['name'] }}</h3>
@@ -143,12 +139,10 @@
         reader.onload = function(e) {
             previewImage.src = e.target.result;
             previewFilename.textContent = file.name;
-            
-            // Hide placeholder and show preview
+
             uploadPlaceholder.classList.add('hidden');
             imagePreview.classList.remove('hidden');
-            
-            // Update upload area styling
+
             uploadArea.classList.remove('border-gray-300');
             uploadArea.classList.add('border-green-500', 'bg-green-50');
         };
@@ -156,58 +150,48 @@
     }
 
     function hideImagePreview() {
-        // Show placeholder and hide preview
         uploadPlaceholder.classList.remove('hidden');
         imagePreview.classList.add('hidden');
-        
-        // Reset upload area styling
+
         uploadArea.classList.remove('border-green-500', 'bg-green-50', 'border-blue-500', 'bg-blue-50');
         uploadArea.classList.add('border-gray-300');
-        
-        // Clear file input
+
         paymentProofInput.value = '';
-        
-        // Hide file name display
+
         fileNameDisplay.textContent = '';
         fileNameDisplay.classList.add('hidden');
     }
 
-    // File input change event
     paymentProofInput.addEventListener('change', function() {
         if (this.files && this.files.length > 0) {
             const file = this.files[0];
-            
-            // Validate file type
+
             if (!file.type.startsWith('image/')) {
                 alert('Please select an image file.');
                 this.value = '';
                 return;
             }
-            
-            // Validate file size (2MB max)
+
             if (file.size > 2 * 1024 * 1024) {
                 alert('File size must be less than 2MB.');
                 this.value = '';
                 return;
             }
-            
+
             showImagePreview(file);
         } else {
             hideImagePreview();
         }
     });
 
-    // Change image button
     changeImageBtn.addEventListener('click', function() {
         paymentProofInput.click();
     });
 
-    // Remove image button
     removeImageBtn.addEventListener('click', function() {
         hideImagePreview();
     });
 
-    // Drag and drop functionality
     uploadArea.addEventListener('dragover', (e) => {
         e.preventDefault();
         if (!imagePreview.classList.contains('hidden')) return;
@@ -223,33 +207,29 @@
     uploadArea.addEventListener('drop', (e) => {
         e.preventDefault();
         uploadArea.classList.remove('bg-gray-100');
-        
+
         const files = e.dataTransfer.files;
         if (files.length > 0) {
             const file = files[0];
-            
-            // Validate file type
+
             if (!file.type.startsWith('image/')) {
                 alert('Please select an image file.');
                 return;
             }
-            
-            // Validate file size (2MB max)
+
             if (file.size > 2 * 1024 * 1024) {
                 alert('File size must be less than 2MB.');
                 return;
             }
-            
-            // Set file to input
+
             const dt = new DataTransfer();
             dt.items.add(file);
             paymentProofInput.files = dt.files;
-            
+
             showImagePreview(file);
         }
     });
 
-    // Prevent default drag behaviors on the entire document
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
         document.addEventListener(eventName, preventDefaults, false);
     });

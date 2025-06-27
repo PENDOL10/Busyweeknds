@@ -19,20 +19,20 @@
 
         <form action="{{ route('admin.products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
-            @method('PUT') {{-- Gunakan method spoofing untuk PUT/PATCH --}}
-            
+            @method('PUT') {{-- Use method spoofing for PUT/PATCH --}}
+
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div class="lg:col-span-2">
                     <div class="bg-white rounded-lg p-6 mb-6">
                         <h3 class="text-lg font-semibold text-gray-900 mb-6">General Information</h3>
-                        
+
                         <div class="mb-6">
                             <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Name of Product</label>
-                            <input type="text" 
-                                   id="name" 
-                                   name="name" 
-                                   class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50 @error('name') border-red-500 @enderror" 
-                                   value="{{ old('name', $product->name) }}" {{-- Isi dengan data produk --}}
+                            <input type="text"
+                                   id="name"
+                                   name="name"
+                                   class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50 @error('name') border-red-500 @enderror"
+                                   value="{{ old('name', $product->name) }}"
                                    placeholder="product">
                             @error('name')
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -41,11 +41,11 @@
 
                         <div class="mb-6">
                             <label for="description" class="block text-sm font-medium text-gray-700 mb-2">Description Product</label>
-                            <textarea id="description" 
-                                      name="description" 
-                                      rows="4" 
-                                      class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50 @error('description') border-red-500 @enderror" 
-                                      placeholder="the description">{{ old('description', $product->description) }}</textarea> {{-- Isi dengan data produk --}}
+                            <textarea id="description"
+                                      name="description"
+                                      rows="4"
+                                      class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50 @error('description') border-red-500 @enderror"
+                                      placeholder="the description">{{ old('description', $product->description) }}</textarea>
                             @error('description')
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
@@ -57,14 +57,14 @@
                             <div class="flex flex-wrap gap-2">
                                 @foreach(['XS', 'S', 'M', 'L', 'XL', 'XXL', 'One Size'] as $size)
                                     <label class="relative">
-                                        <input type="checkbox" 
-                                               name="sizes[]" 
-                                               value="{{ $size }}" 
+                                        <input type="checkbox"
+                                               name="sizes[]"
+                                               value="{{ $size }}"
                                                class="sr-only peer @error('sizes') border-red-500 @enderror"
-                                               {{ in_array($size, old('sizes', $product->sizes ?? [])) ? 'checked' : '' }}> {{-- Centang jika ada di data produk --}}
+                                               {{ in_array($size, old('sizes', $product->sizes ?? [])) ? 'checked' : '' }}>
                                         <div class="px-4 py-2 text-sm font-medium border border-gray-200 rounded-lg cursor-pointer
-                                                                 peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600
-                                                                 hover:border-blue-300 transition-all duration-200">
+                                                                    peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600
+                                                                    hover:border-blue-300 transition-all duration-200">
                                             {{ $size }}
                                         </div>
                                     </label>
@@ -81,11 +81,11 @@
                             <div class="flex gap-4">
                                 @foreach(['Men', 'Women', 'Unisex'] as $gender)
                                     <label class="flex items-center">
-                                        <input type="radio" 
-                                               name="gender" 
-                                               value="{{ $gender }}" 
+                                        <input type="radio"
+                                               name="gender"
+                                               value="{{ $gender }}"
                                                class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500 @error('gender') border-red-500 @enderror"
-                                               {{ old('gender', $product->gender) == $gender ? 'checked' : '' }}> {{-- Centang jika sesuai data produk --}}
+                                               {{ old('gender', $product->gender) == $gender ? 'checked' : '' }}>
                                         <span class="ml-2 text-sm text-gray-700">{{ $gender }}</span>
                                     </label>
                                 @endforeach
@@ -98,31 +98,36 @@
                 </div>
 
                 <div class="lg:col-span-1 space-y-6">
+                    {{-- Front Image Section --}}
                     <div class="bg-white rounded-lg p-6">
-                        <h3 class="text-lg font-semibold text-gray-900 mb-6">Product Image</h3>
-                        
-                        {{-- Logika untuk menentukan URL gambar yang sudah ada --}}
+                        <h3 class="text-lg font-semibold text-gray-900 mb-6">Front Image</h3>
                         @php
-                            $currentImageUrl = '';
-                            if ($product->image) {
-                                if (str_starts_with($product->image, 'products/')) {
-                                    $currentImageUrl = asset('storage/' . $product->image);
+                            $currentFrontImageUrl = '';
+                            if ($product->image_front) {
+                                if (str_starts_with($product->image_front, 'products/')) {
+                                    $currentFrontImageUrl = asset('storage/' . $product->image_front);
                                 } else {
-                                    $currentImageUrl = asset($product->image);
+                                    $currentFrontImageUrl = asset($product->image_front);
+                                }
+                            } elseif ($product->image) { // Fallback to general image if no specific front image
+                                if (str_starts_with($product->image, 'products/')) {
+                                    $currentFrontImageUrl = asset('storage/' . $product->image);
+                                } else {
+                                    $currentFrontImageUrl = asset($product->image);
                                 }
                             }
                         @endphp
 
-                        @if($currentImageUrl)
-                            <div id="current-image-container" class="mb-4">
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Current Image</label>
-                                <img src="{{ $currentImageUrl }}" alt="Current Product Image" class="rounded-lg w-full h-auto object-cover border border-gray-200">
+                        @if($currentFrontImageUrl)
+                            <div id="current-front-image-container" class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Current Front Image</label>
+                                <img src="{{ $currentFrontImageUrl }}" alt="Current Front Image" class="rounded-lg w-full h-auto object-cover border border-gray-200">
                             </div>
                         @endif
 
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Upload New Image (Optional)</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Upload New Front Image (Optional)</label>
                         <div class="border-2 border-dashed border-gray-200 rounded-lg p-8 text-center cursor-pointer hover:border-blue-300 transition-colors"
-                             onclick="document.getElementById('image').click()">
+                             onclick="document.getElementById('image_front').click()">
                             <div class="space-y-3">
                                 <div class="mx-auto w-12 h-12 text-gray-400">
                                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="w-full h-full">
@@ -136,27 +141,76 @@
                                 </div>
                             </div>
                         </div>
-                        <input id="image" name="image" type="file" class="sr-only" accept="image/*">
-                        @error('image')
+                        <input id="image_front" name="image_front" type="file" class="sr-only" accept="image/*">
+                        @error('image_front')
                             <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
                         @enderror
 
-                        <div id="new-image-preview-container" class="mt-4 hidden">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">New Image Preview</label>
-                            <img id="new-image-preview" class="rounded-lg w-full h-auto object-cover border border-gray-200" src="#" alt="New Image Preview">
+                        <div id="new-image-front-preview-container" class="mt-4 hidden">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">New Front Image Preview</label>
+                            <img id="new-image-front-preview" class="rounded-lg w-full h-auto object-cover border border-gray-200" src="#" alt="New Front Image Preview">
                         </div>
                     </div>
 
+                    {{-- Back Image Section --}}
+                    <div class="bg-white rounded-lg p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-6">Back Image (Optional)</h3>
+                        @php
+                            $currentBackImageUrl = '';
+                            if ($product->image_back) {
+                                if (str_starts_with($product->image_back, 'products/')) {
+                                    $currentBackImageUrl = asset('storage/' . $product->image_back);
+                                } else {
+                                    $currentBackImageUrl = asset($product->image_back);
+                                }
+                            }
+                        @endphp
+
+                        @if($currentBackImageUrl)
+                            <div id="current-back-image-container" class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Current Back Image</label>
+                                <img src="{{ $currentBackImageUrl }}" alt="Current Back Image" class="rounded-lg w-full h-auto object-cover border border-gray-200">
+                            </div>
+                        @endif
+
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Upload New Back Image (Optional)</label>
+                        <div class="border-2 border-dashed border-gray-200 rounded-lg p-8 text-center cursor-pointer hover:border-blue-300 transition-colors"
+                             onclick="document.getElementById('image_back').click()">
+                            <div class="space-y-3">
+                                <div class="mx-auto w-12 h-12 text-gray-400">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="w-full h-full">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                              d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900">Click to upload or Drag and Drop</p>
+                                    <p class="text-xs text-gray-500 mt-1">PNG, JPG, GIF up to 2MB</p>
+                                </div>
+                            </div>
+                        </div>
+                        <input id="image_back" name="image_back" type="file" class="sr-only" accept="image/*">
+                        @error('image_back')
+                            <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+                        @enderror
+
+                        <div id="new-image-back-preview-container" class="mt-4 hidden">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">New Back Image Preview</label>
+                            <img id="new-image-back-preview" class="rounded-lg w-full h-auto object-cover border border-gray-200" src="#" alt="New Back Image Preview">
+                        </div>
+                    </div>
+
+                    {{-- Category Section --}}
                     <div class="bg-white rounded-lg p-6">
                         <h3 class="text-lg font-semibold text-gray-900 mb-6">Category</h3>
                         <div>
                             <label for="category_id" class="block text-sm font-medium text-gray-700 mb-2">Pick Product Category</label>
-                            <select id="category_id" 
-                                    name="category_id" 
+                            <select id="category_id"
+                                    name="category_id"
                                     class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50 @error('category_id') border-red-500 @enderror">
                                 <option value="">Select a category</option>
                                 @foreach($categories as $category)
-                                    <option value="{{ $category->id }}" {{ old('category_id', $product->category_id) == $category->id ? 'selected' : '' }}> {{-- Pilih kategori yang sudah ada --}}
+                                    <option value="{{ $category->id }}" {{ old('category_id', $product->category_id) == $category->id ? 'selected' : '' }}>
                                         {{ $category->name }}
                                     </option>
                                 @endforeach
@@ -174,12 +228,12 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label for="price" class="block text-sm font-medium text-gray-700 mb-2">Normal Price</label>
-                                <input type="number" 
-                                       id="price" 
-                                       name="price" 
-                                       step="0.01" 
-                                       class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50 @error('price') border-red-500 @enderror" 
-                                       value="{{ old('price', $product->price) }}" 
+                                <input type="number"
+                                       id="price"
+                                       name="price"
+                                       step="0.01"
+                                       class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50 @error('price') border-red-500 @enderror"
+                                       value="{{ old('price', $product->price) }}"
                                        placeholder="-">
                                 @error('price')
                                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -188,11 +242,11 @@
 
                             <div>
                                 <label for="stock" class="block text-sm font-medium text-gray-700 mb-2">Stock</label>
-                                <input type="number" 
-                                       id="stock" 
-                                       name="stock" 
-                                       class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50 @error('stock') border-red-500 @enderror" 
-                                       value="{{ old('stock', $product->stock) }}" 
+                                <input type="number"
+                                       id="stock"
+                                       name="stock"
+                                       class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50 @error('stock') border-red-500 @enderror"
+                                       value="{{ old('stock', $product->stock) }}"
                                        placeholder="-">
                                 @error('stock')
                                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -201,12 +255,12 @@
 
                             <div>
                                 <label for="discount" class="block text-sm font-medium text-gray-700 mb-2">Discount</label>
-                                <input type="number" 
-                                       id="discount" 
-                                       name="discount" 
-                                       step="0.01" 
-                                       class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50 @error('discount') border-red-500 @enderror" 
-                                       value="{{ old('discount', $product->discount) }}" 
+                                <input type="number"
+                                       id="discount"
+                                       name="discount"
+                                       step="0.01"
+                                       class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50 @error('discount') border-red-500 @enderror"
+                                       value="{{ old('discount', $product->discount) }}"
                                        placeholder="-">
                                 @error('discount')
                                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -215,12 +269,12 @@
 
                             <div>
                                 <label for="shipping_cost" class="block text-sm font-medium text-gray-700 mb-2">Shipping Cost</label>
-                                <input type="number" 
-                                       id="shipping_cost" 
-                                       name="shipping_cost" 
-                                       step="0.01" 
-                                       class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50 @error('shipping_cost') border-red-500 @enderror" 
-                                       value="{{ old('shipping_cost', $product->shipping_cost) }}" 
+                                <input type="number"
+                                       id="shipping_cost"
+                                       name="shipping_cost"
+                                       step="0.01"
+                                       class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50 @error('shipping_cost') border-red-500 @enderror"
+                                       value="{{ old('shipping_cost', $product->shipping_cost) }}"
                                        placeholder="-">
                                 @error('shipping_cost')
                                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -231,7 +285,7 @@
                 </div>
 
                 <div class="lg:col-span-3 flex justify-end pt-6">
-                    <button type="submit" 
+                    <button type="submit"
                             class="inline-flex items-center justify-center px-8 py-3 text-base font-medium text-white bg-[#010BEB] rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200">
                         Update Product
                     </button>
@@ -242,18 +296,18 @@
 </div>
 
 <script>
-    document.getElementById('image').addEventListener('change', function(event) {
+    // Front Image Preview
+    document.getElementById('image_front').addEventListener('change', function(event) {
         const file = event.target.files && event.target.files.item(0);
-        const newImagePreview = document.getElementById('new-image-preview');
-        const newImagePreviewContainer = document.getElementById('new-image-preview-container');
-        const currentImageContainer = document.getElementById('current-image-container'); // Get current image container
+        const newImagePreview = document.getElementById('new-image-front-preview');
+        const newImagePreviewContainer = document.getElementById('new-image-front-preview-container');
+        const currentImageContainer = document.getElementById('current-front-image-container');
 
         if (file) {
             const reader = new FileReader();
             reader.onload = function(e) {
                 newImagePreview.src = e.target.result;
                 newImagePreviewContainer.classList.remove('hidden');
-                // Hide current image if a new one is selected
                 if (currentImageContainer) {
                     currentImageContainer.classList.add('hidden');
                 }
@@ -262,7 +316,32 @@
         } else {
             newImagePreview.src = '#';
             newImagePreviewContainer.classList.add('hidden');
-            // Show current image again if selection is cleared
+            if (currentImageContainer) {
+                currentImageContainer.classList.remove('hidden');
+            }
+        }
+    });
+
+    // Back Image Preview
+    document.getElementById('image_back').addEventListener('change', function(event) {
+        const file = event.target.files && event.target.files.item(0);
+        const newImagePreview = document.getElementById('new-image-back-preview');
+        const newImagePreviewContainer = document.getElementById('new-image-back-preview-container');
+        const currentImageContainer = document.getElementById('current-back-image-container');
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                newImagePreview.src = e.target.result;
+                newImagePreviewContainer.classList.remove('hidden');
+                if (currentImageContainer) {
+                    currentImageContainer.classList.add('hidden');
+                }
+            }
+            reader.readAsDataURL(file);
+        } else {
+            newImagePreview.src = '#';
+            newImagePreviewContainer.classList.add('hidden');
             if (currentImageContainer) {
                 currentImageContainer.classList.remove('hidden');
             }

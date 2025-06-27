@@ -18,8 +18,10 @@ class Product extends Model
         'discount',
         'stock',
         'shipping_cost',
-        'category_id', // Pastikan ini ada di fillable
-        'image'
+        'category_id',
+        'image', // Keep this if you still use it for something (e.g., initial shop preview fallback)
+        'image_front', // ADD THIS LINE
+        'image_back'   // ADD THIS LINE
     ];
 
     protected $casts = [
@@ -29,7 +31,6 @@ class Product extends Model
         'shipping_cost' => 'decimal:2',
     ];
 
-    // DEFINISIKAN RELASI INI (jika belum ada)
     public function category()
     {
         return $this->belongsTo(Category::class);
