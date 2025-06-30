@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Login - {{ config('app.name', 'Busyweeknds') }}</title>
+    <link rel="icon" type="image/png" href="{{ asset('/assets/images/logo.png') }}">
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="author" content="bsyweeknds" />
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}" type="image/x-icon">

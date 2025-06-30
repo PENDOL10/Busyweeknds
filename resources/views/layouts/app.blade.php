@@ -4,7 +4,8 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <title>{{ config('app.name', 'Busyweeknds') }}</title>
+        <title>{{ config('app.name') }}</title>
+        <link rel="icon" type="image/png" href="{{ asset('/assets/images/logo.png') }}">
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <meta name="author" content="bsyweeknds" />
         <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}" type="image/x-icon">
@@ -36,7 +37,7 @@
                 <div class="flex items-center space-x-2 sm:space-x-4 ml-4 sm:ml-6">
                     <!-- Logo -->
                     <a href="{{ route('index') }}" class="text-lg fw-bold">
-                        <img src="{{ asset('assets/images/Logo.png') }}" alt="Uomo" class="logo h-8 sm:h-12"/>
+                        <img src="{{ asset('assets/images/Logo.png') }}" alt="Logo" class="logo h-8 sm:h-12"/>
                     </a>
 
                     <!-- Nav Menu - Visible on all screens -->

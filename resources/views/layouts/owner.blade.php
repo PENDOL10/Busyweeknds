@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Dashboard') - {{ config('app.name', 'Busyweeknds') }} Admin</title>
-
+    <link rel="icon" type="image/png" href="{{ asset('/assets/images/logo.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -68,7 +68,7 @@
             class="fixed lg:static z-40 w-64 h-full bg-[#010BEB] from-brand-900 to-brand-800 text-white shadow-2xl transition-all duration-300 ease-in-out">
             <div class="flex flex-start p-4 left-0 border-b border-brand-700">
                 <a href="{{ route('owner.dashboard') }}" class="flex items-center gap-3">
-                    <img src="{{ asset('assets/images/Logo.png') }}" alt="Logo" class="h-30 w-auto">
+                    <img src="{{ asset('assets/images/logo.png') }}" alt="Logo" class="h-30 w-auto">
                     <span class="text-3xl font-bold text-white transition-opacity duration-300">Owner</span>
                 </a>
             </div>
